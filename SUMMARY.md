@@ -1,6 +1,6 @@
 # Summary
 
-* [引言](first.md)
+* [开始](first.md)
 * [术语表](term.md)
 * [资源库](resource.md)
 

@@ -1,3 +1,24 @@
-# My Awesome Book
+# 以太坊设计与实现
 
-This file file serves as your book's preface, a great place to describe your book's content and ideas.
+这是一本持续写作中的电子书，欢迎关注。
+
+本电子书是对以太坊区块链的实现原理和程序实现进行详解，力图展示区块链2.0先锋以太坊智能合约编程平台设计思想与代码实现。
+
+[内容目录](SUMMARY.md)中以整理出待写内容。
+
+# 写作说明
+
+内容由[登链学院](https://upchain.ke.qq.com/?tuin=bd898bbf)成员写作，除 [Gitbook](https://ethereum.devdapp.cn/)外，首发于[深入浅出区块链](https://learnblockchain.cn/)博客。
+
+> 登链是商业性、培训机构。
+> 深入浅出区块链,是一个社区下公益的技术布道平台。
+
+# 如何贡献
+
+准备中...
+
+# 社区
+
+目前在登链学院组织的微信群交流，关注公众号后，留言“以太坊”
+
+![](images/01.jpeg)
