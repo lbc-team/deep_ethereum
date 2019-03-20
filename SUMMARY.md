@@ -10,7 +10,7 @@
     * [账户](part1/account.md)
     * [区块](part1/block.1.md)
     * [交易](part1/transaction.md)
-    * [交易回执](part1/receipt.md)
+    * [交易收据](part1/receipt.md)
     * [布隆Bloom](part1/bloom.md)
     * [合约事件](part1/evnet.md)
 
@@ -18,15 +18,16 @@
     * [交易池](part2/txPool.md)
     * [矿工](part2/miner.md)
     * [Gas](part2/gas.md)
+    * [价格预测](part2/gpo.md)
     * [状态库](part2/statedb.md)
-    * [工作量证明](pow.md)
+    * [工作量证明](etherhash.md)
 
 * [❸底层核心技术实现](part3/README.md)
     * [编码协议RLP](part3/rlp.md)
     * [哈希](part3/hash.md)
     * [密码库](part3/crypto.md)
     * [虚拟机](part3/evm.md)
-    * [默克尔前缀数](part3/mpt.md)
+    * [默克尔前缀树](part3/mpt.md)
     * [点对点网络](part3/p2p.md)
     * [通信协议](part3/socket.md)
 
