@@ -5,7 +5,7 @@
 * [资源库](resource.md)
 
 * [❶ 数据结构与对象](part1/README.md)
-    * [参数配置](part1/params.md)
+    * [链参数配置](part1/config.md)
     * [创世](part1/genesis.md)
     * [账户](part1/account.md)
     * [区块](part1/block.1.md)
