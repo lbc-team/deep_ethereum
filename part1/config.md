@@ -107,7 +107,7 @@ type ChainConfig struct {
 
 ### DAOForkBlock和DAOForkSupport
 
-以太坊应对[The DAO 攻击](http://chainb.com/?P=Cont&id=1290)所实施的软件软分叉。
+以太坊应对[The DAO 攻击](/part5/dao.md)所实施的软件软分叉。
 在程序代码中嵌入关于 The DAO 账户控制代码，来锁定资产转移。
 
 这是以太坊首个ICO筹集资金达 1.5 亿美元的众筹项目，占有近以太坊总币 15%。
