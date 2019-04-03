@@ -51,4 +51,4 @@
     * [指标库](part5/metric.md)
 
 * [⑥以太坊攻击事件](part6/README.md)
-    * [The DAO攻击](part5/dao.md)    
+    * [The DAO攻击](part6/dao.md)    
