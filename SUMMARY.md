@@ -5,7 +5,7 @@
 * [资源库](resource.md)
 
 * [❶ 数据结构与对象](part1/README.md)
-    * [参数配置](part1/params.md)
+    * [链参数配置](part1/config.md)
     * [创世](part1/genesis.md)
     * [账户](part1/account.md)
     * [区块](part1/block.1.md)
@@ -49,3 +49,6 @@
     * [GraphQL](part5/graphql.md)
     * [公共库](part5/common.md)
     * [指标库](part5/metric.md)
+
+* [⑥以太坊攻击事件](part6/README.md)
+    * [The DAO攻击](part5/dao.md)    
