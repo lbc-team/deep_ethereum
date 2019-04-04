@@ -9,6 +9,7 @@
 
 不同于传统软件，因为区块链的不可篡改性，要求对同一个区块，不管出块时的软件版本，还是10年后的软件版本。都需要保证软件对已出块区块做出相同操作。因此区块链的链配置，不得随意更改，还需要维护重要历史变更内容。
 
+
 下面是链的核心配置信息，定义在 params/config.go 中：
 
 ```go
@@ -135,12 +136,48 @@ Byzantium是Metropolis升级计划中的第一步，为之后的Constantinople�
 
 ### ConstantinopleBlock
 
+以太坊君士坦丁堡版本启用区块高度，主网在2019年3月1日成功出块。
+Constantinople (君士坦丁堡) 包含一大波以太坊改进提案（EIP），
+涉及核心协议规范、客户端 API以及合约标准。下列 EIP 为君士坦丁堡升级中包含的更新：
+
++ [EIP 145 -EVM 中的按位移动（bitwise shifting）指令](https://eips.ethereum.org/EIPS/eip-145)：
+提供与其它算术运算代价相当的原生按位移动指令。
+EVM 现在是没有按位移动指令的，但支持其他逻辑和算术运算。
+按位移动可以通过算术操作来实现，但这样会有更高的 Gas 消耗，也需要更多时间来处理。
+使用算术操作，实现 SHL 和 SHR 需要耗费 35 Gas，但这一提案提供的原生指令只需消耗 3 Gas。
+一句话总结：该 EIP 为协议加入了一个原生的功能，使得 EVM 中的按位移动操作更便宜也更简单。
+
++ [EIP 1014-Skinny CREATE2](https://eips.ethereum.org/EIPS/eip-1014)：
+加入新的操作码 0xf5 ，需要 4 个堆栈参数（stack argument）： endowment 、 memory_start 、 memory_length 、 salt 。具体表现与 CREATE 相同，但使用 keccak256( 0xff ++ sender_address ++ salt ++ keccak256(init_code)))[12:] ，而不是 keccak256(RLP(sender_address, nonce))[12:] ，作为合约初始化的地址。
+拓宽我们的交互范围：有些合约在链上还不存在，但可以确定只可能包含由 init_code 特定部分创建出来的代码，有了该 EIP 之后我们就可以和这样的合约交互。
+对包含与合约的 conterfactual 交互的状态通道来说非常重要。
+一句话总结：这一 EIP 让你可以与还没有被创建出来的合约交互。
+
++ [EIP 1052 EXTCODEHASH 操作码](https://eips.ethereum.org/EIPS/eip-1052)：
+指定了一个新的操作码，可以返回某合约代码的 keccak256 哈希值。
+许多合约都需要检查某一合约的字节码，但并不需要那些字节码本身。比如，某个合约可能想检查另一合约的字节码是不是一组可行的实现之一；又或者它想分析另一合约的代码，把所有能通过分析的合约（即字节码匹配的合约）添加进白名单。
+合约现在可以使用 EXTCODECOPY 操作码，但在那些只需要哈希值的情境下，这一操作码相对来说是比较贵的，尤其是对那些大型合约而言。新的操作码EXTCODEHASH 部署之后，就可以只返回某一合约字节码的 keccak256 哈希值。
+一句话总结：该 EIP 会让相关操作变得更便宜（消耗更少的 Gas）。
+
++ [EIP 1283 改变 SSTORE 操作码所用 Gas 的计算方式](https://eips.ethereum.org/EIPS/eip-1283)：
+改变 SSTORE 操作码的净 Gas 计量方式，以启用合约存储的新用法，并在计算方式与当前大多数实现不匹配的情形下减少无谓的 Gas 消耗。
+一句话总结：该 EIP 会让某些操作变得更便宜（只需更少的 Gas 即可完成操作），减少那些当前“多余”而昂贵的 Gas 消耗。
+
++ [EIP 1234-推迟难度炸弹爆炸的时间并调整区块奖励](https://eips.ethereum.org/EIPS/eip-1234):
+平均出块时间会因为逐渐加速的难度炸弹（也叫做“冰河时期”）而不断上升。该 EIP 提议推迟难度炸弹约 12 个月，并且（为适应冰河期推迟）而减少区块奖励。
+一句话总结：该 EIP 保证了我们不会在 PoS 准备好并实现之前使以太坊停止出块。
 
 ### PetersburgBlock
 
+以太坊彼得斯堡版本启用区块高度。
+因为以太坊改进提案 [EIP1283](https://eips.ethereum.org/EIPS/eip-1283) 可能会为攻击者提供窃取用户资金的代码漏洞。
+为避免这种情况发生，团队决定在同一区块进行两个硬分叉（君士坦丁堡和彼得斯堡）。
+
+该分叉将禁用已发现的缺陷协议。
 
 ### EWASMBlock
- 
+
+尚未实现的功能，以太坊将支持 wasm 指令，意味着可以使用 WebAssembly 编写智能合约。
 
 
 [^1]: 数据来源自 [chain.network](https://chainid.network/)。
