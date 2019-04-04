@@ -178,6 +178,3 @@ EVM 现在是没有按位移动指令的，但支持其他逻辑和算术运算�
 ### EWASMBlock
 
 尚未实现的功能，以太坊将支持 wasm 指令，意味着可以使用 WebAssembly 编写智能合约。
-
-
-[^1]: 数据来源自 [chain.network](https://chainid.network/)。
