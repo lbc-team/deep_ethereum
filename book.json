@@ -1,0 +1,69 @@
+{
+    "title": "以太坊设计与实现",
+    "author": "虞双齐",
+    "links": {
+        "sidebar": {
+            "首页": "https://ethereum.devdapp.cn/"
+        }
+    },
+    "plugins": [
+        "-sharing",
+        "sharing-plus",
+        "include-codeblock",
+        "ace",
+        "-lunr",
+        "-search",
+        "search-pro",
+        "collapsible-menu",
+        "-livereload",
+        "prism",
+        "-highlight",
+        "url-embed",
+        "page-footer-ex"
+    ],
+    "pluginsConfig": {
+        "theme-default": {
+            "showLevel": true
+        },
+        "sharing": {
+            "douban": false,
+            "facebook": false,
+            "google": false,
+            "hatenaBookmark": false,
+            "instapaper": false,
+            "line": false,
+            "linkedin": false,
+            "messenger": false,
+            "pocket": false,
+            "qq": true,
+            "qzone": true,
+            "stumbleupon": false,
+            "twitter": false,
+            "viber": false,
+            "vk": false,
+            "weibo": true,
+            "whatsapp": false,
+            "all": [
+                "facebook",
+                "google",
+                "twitter",
+                "weibo",
+                "qq",
+                "linkedin",
+                "qzone",
+                "douban"
+            ]
+        },
+        "prism": {
+            "css": [
+                "prismjs/themes/prism-solarizedlight.css"
+            ]
+        },
+        "page-footer-ex": {
+            "copyright": "By [虞双齐](http://yushuangqi.com)，本作品采用[知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议进行许可](http://creativecommons.org/licenses/by-nc-nd/4.0/  rel=license)",
+            "markdown": true,
+            "update_label": "此页修订于：",
+            "update_format": "YYYY-MM-DD HH:mm:ss"
+        }
+    }
+}
