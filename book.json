@@ -20,7 +20,10 @@
         "prism",
         "-highlight",
         "url-embed",
-        "page-footer-ex"
+        "page-footer-ex",
+        "disqus",
+        "anchors",
+        "push-bd" 
     ],
     "pluginsConfig": {
         "theme-default": {
@@ -65,6 +68,9 @@
             "markdown": true,
             "update_label": "此页修订于：",
             "update_format": "YYYY-MM-DD HH:mm:ss"
+        },
+        "disqus": {
+            "shortName": "deep-ethereum"
         }
     }
 }
