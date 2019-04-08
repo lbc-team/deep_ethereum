@@ -1,6 +1,7 @@
 {
     "title": "以太坊设计与实现",
     "author": "虞双齐",
+    "description":"对以太坊区块链的实现原理和程序实现进行详解，力图展示区块链2.0先锋以太坊智能合约编程平台设计思想与代码实现",
     "links": {
         "sidebar": {
             "首页": "https://ethereum.devdapp.cn/"
@@ -60,7 +61,7 @@
             ]
         },
         "page-footer-ex": {
-            "copyright": "By [虞双齐](http://yushuangqi.com)，本作品采用[知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议进行许可](http://creativecommons.org/licenses/by-nc-nd/4.0/  rel=license)",
+            "copyright": "By [虞双齐](https://yushuangqi.com)，本作品采用[知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议进行许可](http://creativecommons.org/licenses/by-nc-nd/4.0)",
             "markdown": true,
             "update_label": "此页修订于：",
             "update_format": "YYYY-MM-DD HH:mm:ss"
