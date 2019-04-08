@@ -23,7 +23,10 @@
         "page-footer-ex",
         "disqus",
         "anchors",
-        "push-bd" 
+        "push-bd",
+        "copy-code-button",
+        "back-to-top-button",
+        "baidu-nfer"
     ],
     "pluginsConfig": {
         "theme-default": {
@@ -71,6 +74,9 @@
         },
         "disqus": {
             "shortName": "deep-ethereum"
+        },
+        "baidu-nfer":{
+            "token":"05ea6f9f5ea8ef77633b0df6c3c955a3"
         }
     }
 }
