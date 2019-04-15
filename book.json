@@ -26,7 +26,8 @@
         "push-bd",
         "copy-code-button",
         "back-to-top-button",
-        "-baidu-nfer"
+        "-baidu-nfer",
+        "changyan"
     ],
     "pluginsConfig": {
         "theme-default": {
@@ -77,6 +78,10 @@
         },
         "baidu-nfer":{
             "token":"05ea6f9f5ea8ef77633b0df6c3c955a3"
+        },
+        "changyan": {
+            "appid": "cyubaGnrI",
+            "conf": "88df1ba607b5e7fd89a8664391d6b28d"
         }
     }
 }
