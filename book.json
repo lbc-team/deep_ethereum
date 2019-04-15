@@ -26,7 +26,7 @@
         "push-bd",
         "copy-code-button",
         "back-to-top-button",
-        "baidu-nfer"
+        "-baidu-nfer"
     ],
     "pluginsConfig": {
         "theme-default": {
