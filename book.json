@@ -24,7 +24,7 @@
         "-disqus",
         "anchors",
         "push-bd",
-        "copy-code-button",
+        "-copy-code-button",
         "back-to-top-button",
         "-baidu-nfer",
         "changyan"
