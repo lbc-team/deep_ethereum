@@ -4,7 +4,7 @@
     "description":"对以太坊区块链的实现原理和程序实现进行详解，力图展示区块链2.0先锋以太坊智能合约编程平台设计思想与代码实现",
     "links": {
         "sidebar": {
-            "首页": "https://geth.devdapp.cn/"
+            "首页": "https://learnblockchain.cn/books/geth/"
         }
     },
     "plugins": [
