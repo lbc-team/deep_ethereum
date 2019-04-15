@@ -21,7 +21,7 @@
         "-highlight",
         "url-embed",
         "page-footer-ex",
-        "disqus",
+        "-disqus",
         "anchors",
         "push-bd",
         "copy-code-button",
