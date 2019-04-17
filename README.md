@@ -4,11 +4,12 @@
 
 本电子书是对以太坊区块链的实现原理和程序实现进行详解，力图展示区块链2.0先锋以太坊智能合约编程平台设计思想与代码实现。
 
-[内容目录](SUMMARY.md)中以整理出待写内容。
+电子书的目录为本书内容结构，如果可以点击查阅，说明我已写完这一小节。
 
 # 写作说明
 
-内容由[登链学院](https://upchain.ke.qq.com/?tuin=bd898bbf)成员写作，除 [Gitbook](https://ethereum.devdapp.cn/)外，首发于[深入浅出区块链](https://learnblockchain.cn/)博客。
+内容当前由[登链学院](https://upchain.ke.qq.com/?tuin=bd898bbf)成员[虞双齐](https://yushuangqi.com)写作，
+首发于[深入浅出区块链](https://learnblockchain.cn/)博客下电子书栏目[《以太坊设计与实现》](https://learnblockchain.cn/books/geth/)。
 
 > 登链是商业性、培训机构。
 > 深入浅出区块链,是一个社区下公益的技术布道平台。
