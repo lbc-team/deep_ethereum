@@ -1,0 +1,22 @@
+language: node_js
+node_js:
+- node
+sudo: required
+dist: trusty
+
+branches:
+  only:
+  - master
+install:
+- mkdir work
+- wget http://collection.b0.upaiyun.com/softwares/upx/upx-linux-amd64-v0.2.3
+  -O $PWD/work/upx
+- npm install -g gitbook-cli
+- gitbook install  
+- npm install
+script:
+- grunt deploy
+
+env:
+  global:
+  - UPX_PATH="/books/test"
