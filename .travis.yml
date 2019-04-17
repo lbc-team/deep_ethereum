@@ -7,11 +7,13 @@ dist: trusty
 branches:
   only:
   - master
-install:
+before_install:
 - mkdir work
+- export PATH=$PATH:$PWD/work/  
+install:
 - wget http://collection.b0.upaiyun.com/softwares/upx/upx-linux-amd64-v0.2.3
   -O $PWD/work/upx
-- export PATH=$PATH:$PWD/work/  
+- chmod +x $PWD/work/upx
 - npm install -g gitbook-cli
 - gitbook install  
 - npm install
@@ -20,4 +22,3 @@ script:
 
 env:
   global:
-  - UPX_PATH="/books/test"
