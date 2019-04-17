@@ -4,8 +4,7 @@ module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-clean'); 
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
-    grunt.loadNpmTasks('grunt-contrib-cssmin'); 
-    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-contrib-cssmin');  
     grunt.loadNpmTasks('grunt-exec');
     
 
@@ -23,20 +22,18 @@ module.exports = function (grunt) {
             },
             // 部署代码到又拍云
             deployToUpyun:{
-                cmd:function(){  
+                cmd:function(){
                     //防止错误，不得为空
                     var storagepath=process.env.UPX_PATH;
                     if (!storagepath || storagepath===""){
                         return 'echo "empty path " && exit 1';
                     }
-                    //将多个内容拼接到一条命令执行
+                    //将多个内容拼接到多条命令执行
                     return [
-                       'upx',
-                       "--auth",process.env.UPX_TOKEN,
-                       "sync",
-                       "-w 10 ", 
-                       SOURCE_DIR,process.env.UPX_PATH].join(' ');
-                },    
+                        ['upx','login',process.env.UPX_BUCKET,process.env.UPX_OP,process.env.UPX_PWD].join(" "),
+                        ['upx','sync','-w 10',SOURCE_DIR,storagepath].join(" ") 
+                    ].join('&&');
+                },
             }
         },
         htmlmin: {                                          // Task
