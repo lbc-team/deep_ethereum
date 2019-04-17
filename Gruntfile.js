@@ -25,7 +25,7 @@ module.exports = function (grunt) {
             deployToUpyun:{
                 cmd:function(){  
                     //防止错误，不得为空
-                    storagepath=process.env.UPX_PATH
+                    var storagepath=process.env.UPX_PATH;
                     if (!storagepath || storagepath===""){
                         return 'echo "empty path " && exit 1';
                     }
