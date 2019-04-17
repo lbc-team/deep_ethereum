@@ -34,7 +34,7 @@ module.exports = function (grunt) {
                        'upx',
                        "--auth",process.env.UPX_TOKEN,
                        "sync",
-                       "-auto", 
+                       "-w 10 ", 
                        SOURCE_DIR,process.env.UPX_PATH].join(' ');
                 },    
             }
