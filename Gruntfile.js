@@ -31,7 +31,7 @@ module.exports = function (grunt) {
                     //将多个内容拼接到多条命令执行
                     return [
                         ['upx','login',process.env.UPX_BUCKET,process.env.UPX_OP,process.env.UPX_PWD].join(" "),
-                        ['upx','sync','-w 10',SOURCE_DIR,storagepath].join(" ") 
+                        ['upx','sync','-w 10 -q ',SOURCE_DIR,storagepath].join(" ") 
                     ].join('&&');
                 },
             }
