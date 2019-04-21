@@ -204,14 +204,14 @@ dgeth --dev --datadir $HOME/deepeth/dev console
 如果配置信息随意变更，易引起共识校验不通过等问题。
 只有在加载并检查通过时，才能继续运行程序。
 
-<img src="https://img.learnblockchain.cn/2019/04/07_20190407101509.png" width="400px" alt="创世加载流程"> 
+<img src="https://img.learnblockchain.cn/2019/04/07_20190407101509.png!de" width="400px" alt="创世加载流程"> 
 
 上图是一个简要流程，下面分别讲解“加载创世配置”和“安装创世区块”两个子流程。
 
 ### 加载创世配置
 
 应使用哪种创世配置，由用户在启动 geth 时决定。下图是创世配置选择流程图：
-![以太坊创世配置选择流程图](https://img.learnblockchain.cn/2019/04/07_WX20190407-103229@2x.png)
+![以太坊创世配置选择流程图](https://img.learnblockchain.cn/2019/04/07_WX20190407-103229@2x.png!de)
 通过 geth 命令参数可选择不同网络配置，可以通过 `networkid` 选择，也可使用网络名称启用。
 
 1. 使用 networkid:
@@ -236,7 +236,7 @@ geth 启动时根据不同参数选择加载不同网络配置，并对应不同
 上面已初步选择创世配置，而这一步则根据配置加载或者初始化创世单元。
 下图是处理流程：
 
-![安装创世区块](https://img.learnblockchain.cn/2019/04/07_安装创世区块.png)
+![安装创世区块](https://img.learnblockchain.cn/2019/04/07_安装创世区块.png!de)
 
 首先，需要从数据库中根据区块高度 0 读取创世区块哈希。
 如果不存在则说明本地属于第一次启动，直接使用运行时创世配置来构建创世区块。
