@@ -68,7 +68,7 @@
             ]
         },
         "page-footer-ex": {
-            "copyright": "By [虞双齐](https://yushuangqi.com)，本作品采用[知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议进行许可](http://creativecommons.org/licenses/by-nc-nd/4.0)",
+            "copyright": "[![作者](https://img.shields.io/badge/By-虞双齐-green.svg?style=flat)](https://yushuangqi.com) ![GitHub](https://img.shields.io/github/license/lbc-team/deep_ethereum.svg) ![Travis (.org)](https://img.shields.io/travis/lbc-team/deep_ethereum.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/lbc-team/deep_ethereum.svg) [![](https://img.shields.io/badge/群聊-扫码入群-green.svg?logo=wechat&style=flat&color=red)](http://qr23.cn/DIfz4E)",
             "markdown": true,
             "update_label": "此页修订于：",
             "update_format": "YYYY-MM-DD HH:mm:ss"
