@@ -7,7 +7,7 @@
 ## 数据结构与对象
 
 * [链参数配置](part1/config.md)
-* [创世](part1/genesis.md)
+* [创世区块与链配置载入分析](part1/genesis.md)
 * [账户](part1/account.md)
 * [理解Gas和手续费](part1/gas.md)
 * [区块](part1/block.1.md)
