@@ -17,6 +17,7 @@
     "gitbook-plugin-search-pro": "^2.0.2",
     "gitbook-plugin-sharing-plus": "^0.0.2",
     "gitbook-plugin-url-embed": "^1.0.0",
+    "gitbook-plugin-cnzz": "0.0.3",
     "grunt": "~0.4.2",
     "grunt-cli": "~0.1.0",
     "grunt-contrib-clean": "~0.5.0",

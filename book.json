@@ -27,7 +27,8 @@
         "-copy-code-button",
         "back-to-top-button",
         "-baidu-nfer",
-        "changyan2"
+        "changyan2",
+        "cnzz"
     ],
     "pluginsConfig": {
         "theme-default": {
@@ -82,6 +83,10 @@
         "changyan": {
             "appid": "cyubaGnrI",
             "conf": "88df1ba607b5e7fd89a8664391d6b28d"
+        },
+        "cnzz":{
+            "visible":true,
+            "siteid":"1265946080"
         }
     }
 }
