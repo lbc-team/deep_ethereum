@@ -29,7 +29,7 @@
 
 * [编码协议RLP](part3/rlp.md)
 * [哈希](part3/hash.md)
-* [交易签名](part3/tx-sign.md)
+* [签名与验证](part3/sign-and-valid.md)
 * [密码库](part3/crypto.md)
 * [虚拟机](part3/evm.md)
 * [默克尔前缀树](part3/mpt.md)
