@@ -11,7 +11,7 @@
 * [账户](part1/account.md)
 * [理解Gas和手续费](part1/gas.md)
 * [交易](part1/transaction.md)
-* [区块](part1/block.1.md)
+* [区块](part1/block.md)
 * [交易收据](part1/receipt.md)
 * [布隆Bloom](part1/bloom.md)
 * [合约事件](part1/evnet.md)
