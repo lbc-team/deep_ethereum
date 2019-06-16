@@ -18,7 +18,7 @@
 
 ## 挖矿核心
 
-* [交易池](part2/txPool.md)
+* [交易池(上)](part2/txPool.md)
 * [矿工](part2/miner.md)
 * [Gas](part2/gas.md)
 * [价格预测](part2/gpo.md)
