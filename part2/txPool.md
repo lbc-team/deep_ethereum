@@ -16,7 +16,7 @@
 
 当邻近节点，如矿工节点从邻近节点接收到此交易时，在进入交易池之前。会将交易标记为来自远方（remote）的交易（图中用绿球表示）。也需要经过校验和处理后，进入矿工节点的交易池，等待矿工打包到区块中。
 
-如果邻近节点，不是矿工，也无妨。因为任何节点会默认将接受到得合法交易及时发送给邻近节点。得益于P2P网络，一笔交易约在1.5s内扩散到整个以太坊公链网络的各个节点中。
+如果邻近节点，不是矿工，也无妨。因为任何节点会默认将接受到得合法交易及时发送给邻近节点。得益于P2P网络，一笔交易平均在6s内扩散到整个以太坊公链网络的各个节点中。
 
 ![A-Distributed-P2P-Network-with-Elements-of-Blockchain-and-Cryptocurrency](https://learnblockchain.cn/books/assets/A-Distributed-P2P-Network.jpg)
 
