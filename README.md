@@ -35,5 +35,5 @@
 
 扫描加微信进以太坊技术交流群
 
-![以太坊技术交流微信群](/Users/ysqi/Documents/文章图库/wechat-ethereum.jpeg)
+![以太坊技术交流微信群](https://learnblockchain.cn/books/images/wechat-ethereum.jpeg)
 
