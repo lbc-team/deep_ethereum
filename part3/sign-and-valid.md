@@ -93,7 +93,7 @@ import (
 	"fmt"
 	"log"
 	
-	"github.com/btcsuite/btcd/btcec" 
+	"github.com/ethereum/go-ethereum/crypto" 
 )
 func main()  {  
   dataHash := sha256.Sum256([]byte("ethereum"))
