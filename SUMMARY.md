@@ -18,8 +18,11 @@
 
 ## 挖矿核心
 
-* [交易池](/part2/txPool.md) 
+* [交易池](/part2/txSummary.md) 
+	* [以太坊交易池设计](/part2/txPool.md)
 	* [本地待处理交易存储](/part2/txJournal.md)
+	* [交易入队列](/part2/txAddTx.md)
+	* [交易队列与容量控制](/part2/txPromote.md)
 * [矿工](part2/miner.md)
 * [Gas](part2/gas.md)
 * [价格预测](part2/gpo.md)
