@@ -19,14 +19,25 @@
 ## 挖矿核心
 
 * [交易池](/part2/txSummary.md) 
+	
 	* [以太坊交易池设计](/part2/txPool.md)
 	* [本地待处理交易存储](/part2/txJournal.md)
 	* [交易入队列](/part2/txAddTx.md)
 	* [交易队列与容量控制](/part2/txPromote.md)
-* [矿工](part2/miner.md)
+	
+* [挖矿](part2/miner.md)
+
+	* [设计架构](/part2/miner_design.md)
+	* [区块打包](/part2/miner_block.md)
+	* [共识](/part2/miner_consensus.md)
+	* [ethash](/part2/miner_consensus_ethash.md)
+	
 * [Gas](part2/gas.md)
+
 * [价格预测](part2/gpo.md)
+
 * [状态库](part2/statedb.md)
+
 * [工作量证明](etherhash.md)
 
 ## 底层核心技术实现
@@ -66,3 +77,8 @@
 * [The DAO攻击](part6/dao.md)    
 
 ## geth命令
+
+- [以太坊交易池设计](https://learnblockchain.cn/books/geth/part2/txPool.html)
+- [本地待处理交易存储](https://learnblockchain.cn/books/geth/part2/txJournal.html)
+- [交易入队列](https://learnblockchain.cn/books/geth/part2/txAddTx.html)
+- [交易队列与容量控制](https://learnblockchain.cn/books/geth/part2/txPromote.html)
