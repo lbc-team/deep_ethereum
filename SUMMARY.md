@@ -28,6 +28,8 @@
 * [挖矿](part2/miner.md)
 
 	* [设计架构](/part2/miner_design.md)
+	* [启动挖矿](/part2/miner_run_start.md)
+	* [挖矿工作信号监控](/part2/miner_run_loop_1.md)
 	* [区块打包](/part2/miner_block.md)
 	* [共识](/part2/miner_consensus.md)
 	* [ethash](/part2/miner_consensus_ethash.md)
