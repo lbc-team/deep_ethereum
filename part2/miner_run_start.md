@@ -1,7 +1,3 @@
-
-
-
-
 挖矿模块只通过 Miner 实例对外提供数据访问。可以通过多种途径开启挖矿服务。程序运行时已经将 Miner 实例化，并进入等待挖矿状态，随时可以启动挖矿。
 
 ## 挖矿参数
@@ -30,8 +26,6 @@
 dgeth -h |grep "mine"
 ```
 
-
-
 ## 实例化Miner
 
 geth 程序运行时已经将 Miner 实例化，只需等待命令开启挖矿。
@@ -49,8 +43,6 @@ eth.miner.SetExtra(makeExtraData(config.MinerExtraData))
 ![image-20190722225217754](/Users/ysqi/Documents/文章图库/image-20190722225217754.png)
 
 [Miner API](https://github.com/ethereum/go-ethereum/wiki/Management-APIs#miner) 分 public 和 private。挖矿属于隐私，不得让其他人任意修改。因此挖矿API全部定义在 Private 中，公共部分只有 `Mining()`。
-
-
 
 ## 启动挖矿
 
@@ -102,8 +94,6 @@ if ctx.GlobalBool(utils.MiningEnabledFlag.Name) || ctx.GlobalBool(utils.Develope
 
 在启动挖矿之前，还需要获取 `—miner.gasprice` 实时应用到交易池中❷。同时也需要指定将允许使用多少协程来并行参与PoW计算❸。然后开启挖矿，如果开启挖矿失败则终止程序运行并打印错误信息❹。
 
-
-
 ### 控制台命令启动挖矿
 
 在实例化Miner后，已经将 miner 的操作API化。因此我们可以在 geth 的控制台中输入Start命令启动挖矿。
@@ -124,9 +114,7 @@ dgeth --maxpeers=0 console
 
 ![image-20190722231355886](/Users/ysqi/Documents/文章图库/image-20190722231355886.png)
 
-  启动挖矿后，将开始出新区块。
-
-
+启动挖矿后，将开始出新区块。
 
 ###  RPC API 启动挖矿
 
@@ -143,8 +131,6 @@ dgeth --maxpeer 0 --rpc --rpcapi --rpcport 8080 "miner,admin,eth" console
 ```sh
 curl -d '{"id":1,"method": "miner_start", "params": [1]}' http://127.0.0.1:8080
 ```
-
-
 
 ## 挖矿启动细节
 

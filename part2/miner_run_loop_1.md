@@ -1,12 +1,8 @@
 挖矿的核心集中在 worker 中。worker 采用Go语言内置的 chain 跨进程通信方式。在不同工作中，根据信号处理不同工作。
 
-
-
 下图是实例化 worker 时，启动的四个循环，分别监听不同信号来处理不同任务。
 
 ![以太坊Miner下监听信号](https://learnblockchain.cn/books/assets/image-20190721235307204.png!de)
-
-
 
 ## 挖矿工作信号
 
@@ -69,7 +65,6 @@ newWork 信号数据中有三个字段：
 1. interrupt：这是一个数字指针，也就不管新work信号还是旧work信号，都能一直跟踪相同的一个全局唯一的任务终止信号值`interrupt`。 如果是需要终止旧任务，只需要更新信号值`atomic.StoreInt32(interrupt, s)`后，work 内部便会感知到，从而终止挖矿工作。
 2. noempty：是否不能为空块。默认情况下是允许挖空块的，但是明知有交易需要处理，则不允许挖空块（见 timer信号）。
 3. timestamp：记录的是当前操作系统时间，最终会被用作区块的区块时间戳。
-
 
 
 ## 动态估算交易处理时长
@@ -139,6 +134,3 @@ case interval := <-w.resubmitIntervalCh:
    } 
    minRecommit, recommit = interval, interval
 ```
-
-
-
