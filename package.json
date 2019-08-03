@@ -1,0 +1,32 @@
+{
+  "name": "deep_ethereum",
+  "version": "0.1.0",
+  "description": "本电子书是对以太坊区块链的实现原理和程序实现进行详解，力图展示区块链2.0先锋以太坊智能合约编程平台设计思想与代码实现。",
+  "main": "Gruntfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/lbc-team/deep_ethereum.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/lbc-team/deep_ethereum/issues"
+  },
+  "homepage": "https://learnblockchain.cn/books/geth",
+  "devDependencies": {
+    "grunt": "~0.4.2",
+    "grunt-cli": "~0.1.0",
+    "grunt-contrib-clean": "~0.5.0",
+    "grunt-contrib-cssmin": "^1.0.2",
+    "grunt-contrib-htmlmin": "^2.0.0",
+    "grunt-contrib-jshint": "~0.7.2",
+    "grunt-exec": "^1.0.1",
+    "grunt-gh-pages": "0.9.1"
+  },
+  "peerDependencies": {
+    "grunt": "~0.4.1"
+  }
+}
