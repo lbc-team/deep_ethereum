@@ -1,4 +1,10 @@
-交易(Transaction)是指由一个[外部账户](./account.md#外部账户)转移一定资产给某个账户，
+---
+title: "以太坊交易-Transaction"
+menuTitle: "交易"
+weight: 100005
+---
+
+交易(Transaction)是指由一个[外部账户]({{< ref "./account.md#外部账户" >}})转移一定资产给某个账户，
 或者发出一个消息指令到某个智能合约。
 
 在以太坊网络中，交易执行属于一个事务。具有原子性、一致性、隔离性、持久性特点。
@@ -23,15 +29,15 @@
 
 ![以太坊交易数据结构](https://img.learnblockchain.cn/2019/04/24_transaction-struct.png!de)
 
-开头是一个 uint64 类型的数字，称之为随机数。用于撤销交易、防止双花和修改[以太坊账户](./account.md#账户数据结构)的 Nonce 值（细节在讲解交易执行流程时讲解）。
+开头是一个 uint64 类型的数字，称之为随机数。用于撤销交易、防止双花和修改[以太坊账户]({{< ref "./account.md" >}}#账户数据结构)的 Nonce 值（细节在讲解交易执行流程时讲解）。
 
 第二部分是关于交易执行限制的设置，gas 为愿意供以太坊虚拟机运行的燃料上限。
-`gasPrice` 是愿意支付的燃料单价。`gasPrcie * gas` 则为愿意为这笔交易支付的最高手续费。关于 gas 更多内容请阅读[《理解Gas和手续费》](./gas.md)。
+`gasPrice` 是愿意支付的燃料单价。`gasPrcie * gas` 则为愿意为这笔交易支付的最高手续费。关于 gas 更多内容请阅读[《理解Gas和手续费》]({{< ref "./gas.md" >}})。
 
 我从程序执行逻辑上可以这样解释第三部分。是交易发送者输入以太坊虚拟机执行此交易的初始信息： 
 虚拟机操作对象（接收方 To）、从交易发送方转移到操作对象的资产（Value），以及虚拟机运行时入参(input)。其中 To 为空时，意味着虚拟机无可操作对象，此时虚拟机将利用 input 内容部署一个新合约。
 
-第四部分是交易发送方对交易的[签名](../part3/sign-and-valid.md)结果，可以利用交易内容和签名结果反向推导出签名者，即交易发送方地址。
+第四部分是交易发送方对交易的[签名]({{< ref "../part3/sign-and-valid.md" >}})结果，可以利用交易内容和签名结果反向推导出签名者，即交易发送方地址。
 
 四部分内容的组合，解决了交易安全问题、实现了智能合约的互动方式以及提供了灵活可调整的交易手续费。
 
@@ -137,7 +143,7 @@ func Sender(signer Signer, tx *Transaction) (common.Address, error) {
 }
 ```
 
-特殊指出是需要一个[Signer](../part3/sign-and-valid.md)进行解签名，同时通过signer获取Sender，合法时缓存并返回。但在使用缓存内容时，还需要检查前后两个 Signer 是否一致，因为不一样的Signer 算法不一样，获得的交易签名者也不相同。
+特殊指出是需要一个[Signer]({{< ref "../part3/sign-and-valid.md" >}})进行解签名，同时通过signer获取Sender，合法时缓存并返回。但在使用缓存内容时，还需要检查前后两个 Signer 是否一致，因为不一样的Signer 算法不一样，获得的交易签名者也不相同。
 
 
 
@@ -162,7 +168,7 @@ func Sender(signer Signer, tx *Transaction) (common.Address, error) {
   }
   ```
 
-	从交易签名内容`V`中提取[链ID](./config.md#ChainID)。用于在获取交易签名者时判断签名合法性，一旦属于受保护(`Protected()`)的交易，则签名信息中必须包含当前链ID，否则属于非法交易。这项交易保护特性是在以太坊硬分叉出以太经典链后，爆出简单重复攻击漏洞，在 [EIP 155: Simple replay attack protection](http://eips.ethereum.org/EIPS/eip-155) 中得以修复。签名细节请查看[《交易签名》](../part3/sign-and-valid.md)。
+	从交易签名内容`V`中提取[链ID]({{< ref "./config.md#ChainID)。用于在获取交易签名者时判断签名合法性，一旦属于受保护(`Protected()`)的交易，则签名信息中必须包含当前链ID，否则属于非法交易。这项交易保护特性是在以太坊硬分叉出以太经典链后，爆出简单重复攻击漏洞，在 [EIP 155: Simple replay attack protection](http://eips.ethereum.org/EIPS/eip-155) 中得以修复。签名细节请查看[《交易签名》](../part3/sign-and-valid.md" >}})。
 
 2. RLP接口实现方法
 
@@ -246,7 +252,7 @@ func Sender(signer Signer, tx *Transaction) (common.Address, error) {
 
 ## 交易签名
 
-交易签名实在太过重要，我单独写一篇文章介绍[《以太坊交易签名》](../part3/sign-and-valid.md)。
+交易签名实在太过重要，我单独写一篇文章介绍[《以太坊交易签名》]({{< ref "../part3/sign-and-valid.md" >}})。
 
 
 

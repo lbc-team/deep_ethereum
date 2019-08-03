@@ -1,10 +1,12 @@
+---
+title: "交易入队列"
+date: 2019-07-31T22:58:46+08:00 
+weight: 20203
+---
 
-
-这是关于以太坊交易池的第三篇文章，第一篇是[整体概况以太坊交易池](./txPool.md)，第二篇是讲解[以太坊本地交易存储](./txJournal.md)。而第三篇文章详解一笔交易时如何进入交易池，以及影响。内容较多，请坐好板凳。
+这是关于以太坊交易池的第三篇文章，第一篇是[整体概况以太坊交易池]({{< ref "/part2/miner">}})，第二篇是讲解[以太坊本地交易存储]({{< ref "txJournal.md" >}})。而第三篇文章详解一笔交易时如何进入交易池，以及影响。内容较多，请坐好板凳。
 
 交易进入交易池分三步走：校验、入队列、容量检查。拿 AddLocalTx举例。核心代码集中在交易池的`func (pool *TxPool) add(tx *types.Transaction, local bool) (bool, error)`方法。
-
-
 
 ## 校验交易合法性
 
@@ -47,7 +49,7 @@ if pool.currentMaxGas < tx.Gas() {
 
 
 
-每笔交易都需要携带[交易签名](/part3/sign-and-valid.md)信息，并从签名中解析出签名者地址。只有合法的签名才能成功解析出签名者。一旦解析失败拒绝此交易。
+每笔交易都需要携带[交易签名({{< ref "part3/sign-and-valid.md" >}})信息，并从签名中解析出签名者地址。只有合法的签名才能成功解析出签名者。一旦解析失败拒绝此交易。
 
 ```
 from, err := types.Sender(pool.signer, tx)
@@ -72,7 +74,7 @@ if !local && pool.gasPrice.Cmp(tx.GasPrice()) > 0 {
 }
 ```
 
-以太坊中每个[账户](/part1/account.md)都有一个数字类型的 Nonce 字段。是一个有序数字，一次比一次大。虚拟机每执行一次该账户的交易，则新 Nonce 将在此交易的Nonce上加1。如果使用恰当，该 Nonce 可间接表示已打包了 Nonce 笔该账户交易。既然不会变小，那么在交易池中不允许出现交易的Nonce 小于此账户当前Nonce的交易。
+以太坊中每个[账户({{< ref "part1/account.md" >}})都有一个数字类型的 Nonce 字段。是一个有序数字，一次比一次大。虚拟机每执行一次该账户的交易，则新 Nonce 将在此交易的Nonce上加1。如果使用恰当，该 Nonce 可间接表示已打包了 Nonce 笔该账户交易。既然不会变小，那么在交易池中不允许出现交易的Nonce 小于此账户当前Nonce的交易。
 
 ```go
 if pool.currentState.GetNonce(from) > tx.Nonce() {

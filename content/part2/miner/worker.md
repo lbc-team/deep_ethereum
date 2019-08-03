@@ -1,8 +1,14 @@
-
+---
+title: "以太坊挖矿逻辑流程"
+menuTitle: "挖矿流程"
+date: 2019-07-31T22:58:46+08:00
+draft: false
+weight: 20103
+---
 
 上一篇文章中，有介绍是如何发出挖矿工作信号的。当有了挖矿信号后，就可以开始挖矿了。
 
-先回头看看，在讲解[挖矿的第一篇文章](miner.md)中，有讲到挖矿流程。这篇文章将讲解挖矿中的各个环节。
+先回头看看，在讲解[挖矿的第一篇文章]({{< ref "/part2/miner" >}})中，有讲到挖矿流程。这篇文章将讲解挖矿中的各个环节。
 
 ![以太坊挖矿流程](https://learnblockchain.cn/books/assets/image-20190721114625930.png!de)
 
@@ -33,11 +39,11 @@ case req := <-w.newWorkCh:
    w.commitNewWork(req.interrupt, req.noempty, req.timestamp)
 ```
 
-这个信号的来源，已经在上一篇文章 [挖矿工作信号监控](miner_run_loop_1.md)中讲解。信号中的各项信息也来源与外部，这里仅仅是忠实地传递意图。
+这个信号的来源，已经在上一篇文章 [挖矿工作信号监控]({{< ref "signal.md" >}})中讲解。信号中的各项信息也来源与外部，这里仅仅是忠实地传递意图。
 
 ### 新交易信号
 
-在[交易池](txAddTx.md)文章中有讲到，交易池在将交易推入交易池后，将向事件订阅者发送 NewTxsEvent。在 miner 中也订阅了此事件。
+在[交易池]({{< ref "/part2/txpool" >}})文章中有讲到，交易池在将交易推入交易池后，将向事件订阅者发送 NewTxsEvent。在 miner 中也订阅了此事件。
 
 ```go
 worker.txsSub = eth.TxPool().SubscribeNewTxsEvent(worker.txsCh)
@@ -109,7 +115,7 @@ case ev := <-w.chainSideCh:
 
 ## 挖矿流程环节
 
-当开始新区块挖矿时，第一步就是构建区块，打包出包含交易的区块。在打包区块中，是按逻辑顺序依次组装各项信息。如果你对区块内容不清楚，请先查阅文章[区块结构](part1/block.md)。
+当开始新区块挖矿时，第一步就是构建区块，打包出包含交易的区块。在打包区块中，是按逻辑顺序依次组装各项信息。如果你对区块内容不清楚，请先查阅文章[区块结构]({{< ref "part1/block.md" >}})。
 
 ### 设置新区块基本信息
 

@@ -1,3 +1,11 @@
+---
+title: "以太坊挖矿信号监控"
+menuTitle: "挖矿信号"
+date: 2019-07-31T22:58:46+08:00
+draft: false
+weight: 20102
+---
+
 挖矿的核心集中在 worker 中。worker 采用Go语言内置的 chain 跨进程通信方式。在不同工作中，根据信号处理不同工作。
 
 下图是实例化 worker 时，启动的四个循环，分别监听不同信号来处理不同任务。
@@ -14,7 +22,7 @@
 
 1. start 信号：
 
-   start信号属于开启挖矿的信号。这个我在上一篇[启动挖矿](./miner_run_start.md)中，已经有简单介绍。每次在 miner.Start() 时将会触发新挖矿任务。
+   start信号属于开启挖矿的信号。这个我在上一篇[启动挖矿]({{< ref "start.md" >}})中，已经有简单介绍。每次在 miner.Start() 时将会触发新挖矿任务。
 
    ```go
    clearPending(w.chain.CurrentBlock().NumberU64())

@@ -1,3 +1,9 @@
+---
+title: "以太坊交易回执-Receipt"
+menuTitle: "交易回执"
+weight: 100007
+---
+
 不同于比特币，以太坊作为智能合约平台。每一笔交易作为消息在以太坊虚拟机中执行时，均会获得一个交易回执信息(Receipt)。形同在银行转账后，可以获得关于这笔转账的交易电子回单。
 
 ![招商银行电子回单](https://img.learnblockchain.cn/2019/05/21_Transaction-receipt.png!de)
@@ -103,7 +109,7 @@ type receiptRLP struct {
   }
   ```
   
-+ GasUsed: 这笔交易执行所消耗的[Gas燃料](./gas.md)。
++ GasUsed: 这笔交易执行所消耗的[Gas燃料]({{< ref "./gas.md" >}})。
 
 这些信息不参与共识的原因是这三项信息已经在其他地方校验。
 

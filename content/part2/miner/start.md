@@ -1,3 +1,11 @@
+---
+title: "启动挖矿"
+menuTitle: "启动挖矿"
+date: 2019-07-31T22:58:46+08:00
+draft: false
+weight: 20101
+---
+
 挖矿模块只通过 Miner 实例对外提供数据访问。可以通过多种途径开启挖矿服务。程序运行时已经将 Miner 实例化，并进入等待挖矿状态，随时可以启动挖矿。
 
 ## 挖矿参数
@@ -40,7 +48,7 @@ eth.miner.SetExtra(makeExtraData(config.MinerExtraData))
 
 从上可看出，在实例化 miner 时所用到的配置项只有4项。实例化后，便可通过 API 操作 Miner。
 
-![image-20190722225217754](/Users/ysqi/Documents/文章图库/image-20190722225217754.png)
+![image-20190722225217754](https://learnblockchain.cn/books/assets/image-20190722225217754.png!de)
 
 [Miner API](https://github.com/ethereum/go-ethereum/wiki/Management-APIs#miner) 分 public 和 private。挖矿属于隐私，不得让其他人任意修改。因此挖矿API全部定义在 Private 中，公共部分只有 `Mining()`。
 
@@ -58,7 +66,7 @@ dgeth --dev --mine
 
 启动后，可以看到默认情况下已开启挖矿。开发者模式下已经挖出了一个高度为1的空块。
 
-![image-20190722215758989](/Users/ysqi/Documents/文章图库/image-20190722215758989.png)
+![image-20190722215758989(https://learnblockchain.cn/books/assets/image-20190722215758989.png!de)
 
 当参数加入了`--mine`参数表示启用挖矿，此时将根据输入个各项挖矿相关的参数启动挖矿服务。
 
@@ -112,7 +120,7 @@ if ctx.GlobalBool(utils.MiningEnabledFlag.Name) || ctx.GlobalBool(utils.Develope
 dgeth --maxpeers=0 console
 ```
 
-![image-20190722231355886](/Users/ysqi/Documents/文章图库/image-20190722231355886.png)
+![启动命令](https://learnblockchain.cn/books/assets/image-20190722231355886.png!de)
 
 启动挖矿后，将开始出新区块。
 
@@ -221,5 +229,5 @@ for {
 }      
 ```
 
-[^1]: dgeth 是本电子书书写期初指导大家所编译的一个 geth 程序。具体见[《开始》](/first.md#编译geth)
+[^1]: dgeth 是本电子书书写期初指导大家所编译的一个 geth 程序。具体见[《开始》]({{< ref "first.md#编译geth" >}})
 

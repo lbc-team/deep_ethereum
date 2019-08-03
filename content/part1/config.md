@@ -1,3 +1,9 @@
+---
+title: "以太坊基础配置"
+menuTitle: "配置"
+weight: 100001
+---
+
 以太坊的基础配置用于服务于链，启动以太坊节点，则需要将链配置载入。
 因此，在以太坊中内置了主网(mainnet)、测试网(testnet)、Rinkeby、Goerli网络中链配置。
 
@@ -106,7 +112,7 @@ type ChainConfig struct {
 
 ### DAOForkBlock和DAOForkSupport
 
-以太坊应对[The DAO 攻击](/part6/dao.md)所实施的软件软分叉。
+以太坊应对[The DAO 攻击]({{< ref "dao.md" >}})所实施的软件软分叉。
 在程序代码中嵌入关于 The DAO 账户控制代码，来锁定资产转移。
 
 这是以太坊首个ICO筹集资金达 1.5 亿美元的众筹项目，占有近以太坊总币 15%。
