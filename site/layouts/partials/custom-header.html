@@ -1,0 +1,61 @@
+<link rel="alternate" hreflang="{{ $.Site.LanguageCode | default "en" }}" href="{{ $.Site.BaseURL  }}" />
+<meta name="renderer" content="webkit" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+{{/* support older feature phones 
+  see: https://stackoverflow.com/questions/1988499/meta-tags-for-mobile-should-they-be-used
+  */}}
+<meta name="MobileOptimized" content="width"/>
+<meta name="HandheldFriendly" content="true"/>
+
+{{/* fit for browsing on mobile devices and PC, 
+  see : https://ziyuan.baidu.com/college/courseinfo?id=156
+*/}}
+<meta name="applicable-device" content="pc,mobile">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+<meta name="theme-color" content="#f8f5ec" />
+<meta name="msapplication-navbutton-color" content="#f8f5ec">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="#f8f5ec">
+{{/* Add to homescreen for Chrome on Android */}}
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- description & keywords  --> 
+{{- if .Description -}}
+  <meta name="description" content="{{ .Description | safeHTML }}" />
+{{ else if .IsPage }}
+  <!-- <meta name="description" content="{{ .Summary | plainify }}" /> -->
+{{ else if .Site.Params.description }}
+  <meta name="description" content="{{ .Site.Params.description | safeHTML }}" />
+{{- end -}}
+
+{{- if .Keywords -}}
+  {{ $length := len .Keywords | add -1 -}}
+  <meta name="keywords" content="{{ range $index, $element := .Keywords }}{{ $element | safeHTML }}{{if ne $index $length }}, {{ end }}{{ end }}" />
+{{ else if .Site.Params.keywords }}
+  {{ $length := len .Site.Params.keywords | add -1 -}}
+  <meta name="keywords" content="{{ range $index, $element := .Site.Params.keywords }}{{ $element | safeHTML }}{{if ne $index $length }}, {{ end }}{{ end }}" />
+{{- end }}
+
+
+{{/* NOTE: These Hugo Internal Templates can be found starting at https://github.com/spf13/hugo/blob/master/tpl/tplimpl/template_embedded.go#L158 */}}
+{{- template "_internal/opengraph.html" . -}}
+{{- template "_internal/google_news.html" . -}}
+{{- template "_internal/schema.html" . -}}
+{{- template "_internal/twitter_cards.html" . -}}
+
+
+<!-- Permalink & RSSlink -->
+<link rel="canonical" href="{{ .Permalink }}" />
+{{ with .OutputFormats.Get "RSS" }} 
+<link href="{{ .RelPermalink }}" rel="alternate" type="application/rss+xml" title="{{ $.Site.Title }}" />
+<link href="{{ .RelPermalink }}" rel="feed" type="application/rss+xml" title="{{ $.Site.Title }}" />
+{{ end }} 
+
+
+<link rel="stylesheet" href="/css/syntax.css">
+<!-- cnzz 统计 -->
+{{if $.Site.Params.cnzz_enable}}
+<script async defer src="http://s95.cnzz.com/z_stat.php?id={{$.Site.Params.cnzz_appid}}"></script>
+{{end}}

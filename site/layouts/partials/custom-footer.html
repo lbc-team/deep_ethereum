@@ -1,0 +1,12 @@
+{{if $.Site.Params.changyan_enable}}
+<!--PC版-->
+<script charset="utf-8"  type="text/javascript" src="https://changyan.sohu.com/upload/changyan.js" ></script>
+<script type="text/javascript">
+window.changyan.api.config({
+appid: '{{$.Site.Params.changyan_appid}}',
+conf: '{{$.Site.Params.changyan_conf}}'
+});
+</script>
+{{end}}
+
+<script async defer src="https://buttons.github.io/buttons.js"></script>
