@@ -19,6 +19,21 @@ module.exports = function (grunt) {
         exec: {
             buildContent: {
                 cmd: "hugo -v",
+            },
+            // 部署代码到又拍云
+            upxdeploy:{
+                cmd:function(){
+                    //防止错误，不得为空
+                    var storagepath=process.env.UPX_PATH;
+                    if (!storagepath || storagepath===""){
+                        return 'echo "empty path " && exit 1';
+                    }
+                    //将多个内容拼接到多条命令执行
+                    return [
+                        ['upx','login',process.env.UPX_BUCKET,process.env.UPX_OP,process.env.UPX_PWD].join(" "),
+                        ['upx','-q','sync','-w 10',SOURCE_DIR,storagepath].join(" ") 
+                    ].join('&&');
+                },
             }
         },
         htmlmin: {                                          // Task
@@ -76,24 +91,6 @@ module.exports = function (grunt) {
                 },
                 src: ['**/*']
             }
-        },
-
-        'upx':{
-             // 部署代码到又拍云
-             deploy:{
-                cmd:function(){
-                    //防止错误，不得为空
-                    var storagepath=process.env.UPX_PATH;
-                    if (!storagepath || storagepath===""){
-                        return 'echo "empty path " && exit 1';
-                    }
-                    //将多个内容拼接到多条命令执行
-                    return [
-                        ['upx','login',process.env.UPX_BUCKET,process.env.UPX_OP,process.env.UPX_PWD].join(" "),
-                        ['upx','-q','sync','-w 10',SOURCE_DIR,storagepath].join(" ") 
-                    ].join('&&');
-                },
-            }
         }
     });
 
@@ -116,13 +113,14 @@ module.exports = function (grunt) {
     grunt.registerTask('check-deploy', function () {
         // need this
         this.requires(['build']);
-
+        grunt.task.run('exec:upxdeploy'); 
         // only deploy under these conditions
         if (process.env.TRAVIS === 'true' && process.env.TRAVIS_SECURE_ENV_VARS === 'true' && process.env.TRAVIS_PULL_REQUEST === 'false') {
             grunt.log.writeln('executing deployment');
             // queue deploy
             // grunt.task.run('gh-pages:deploy'); 
-            grunt.task.run('upx:deploy'); 
+            grunt.upx.deploy();
+            // grunt.task.run('upx:deploy'); 
         }
         else {
             grunt.log.writeln('skipped deployment');
