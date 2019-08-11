@@ -3,7 +3,7 @@ title: "以太坊挖矿信号监控"
 menuTitle: "挖矿信号"
 date: 2019-07-31T22:58:46+08:00
 draft: false
-weight: 20102
+weight: 20302
 ---
 
 挖矿的核心集中在 worker 中。worker 采用Go语言内置的 chain 跨进程通信方式。在不同工作中，根据信号处理不同工作。
