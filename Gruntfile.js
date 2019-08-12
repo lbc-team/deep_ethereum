@@ -112,15 +112,13 @@ module.exports = function (grunt) {
 
     grunt.registerTask('check-deploy', function () {
         // need this
-        this.requires(['build']);
-        grunt.task.run('exec:upxdeploy'); 
+        this.requires(['build']); 
         // only deploy under these conditions
         if (process.env.TRAVIS === 'true' && process.env.TRAVIS_SECURE_ENV_VARS === 'true' && process.env.TRAVIS_PULL_REQUEST === 'false') {
             grunt.log.writeln('executing deployment');
             // queue deploy
-            // grunt.task.run('gh-pages:deploy'); 
-            grunt.upx.deploy();
-            // grunt.task.run('upx:deploy'); 
+            // grunt.task.run('gh-pages:deploy');
+            grunt.task.run('exec:upxdeploy'); 
         }
         else {
             grunt.log.writeln('skipped deployment');
