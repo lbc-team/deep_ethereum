@@ -1,0 +1,83 @@
+{{ partial "header.html" . }}
+<style>
+	#summaryTable {
+		margin-bottom: 30px;
+		width: 100%;
+		text-align: left;
+		color: #3f3f3f;
+		border-collapse: collapse;
+		border: 1px solid #e8e8e8;
+	}
+
+	#summaryTable th,
+	#summaryTable td {
+		padding: 10px 15px;
+	}
+
+	#body-inner>table th {
+		text-align: right;
+		background-color: #f0f0f0;
+		border: 1px solid #dedede;
+		border-bottom-color: #c9c9c9;
+	}
+</style>
+<table id="summaryTable">
+	<tbody>
+
+		<tr>
+			<th>EIP</th>
+			<td><a target="_blank" href="https://github.com/ethereum/EIPs/blob/master/EIPS/eip-{{.Params.eip.eip}}.md"
+					rel="nofollow">eip-{{.Params.eip.eip}}</a></td>
+		</tr>
+		<tr>
+			<th>作者</th>
+			<td> 
+				{{if .Params.eip.authorEmail}}
+				<a target="_blank" href="mailto:{{.Params.eip.authorEmail}}" rel="nofollow">{{.Params.eip.author}}</a>
+				{{else if .Params.eip.author}} 
+					{{.Params.eip.author}}
+				{{end}}
+			</td>
+
+		</tr>
+		{{if .Params.eip.discussionsTo}}
+		<tr>
+			<th>讨论场</th>
+			<td><a target="_blank" href="{{.Params.eip.discussionsTo}}" rel="nofollow">{{.Params.eip.discussionsTo}}</a>
+			</td>
+		</tr>
+		{{end}}
+		<tr>
+			<th>状态</th>
+			<td>{{.Params.eip.status}}
+			</td>
+		</tr>
+		<tr>
+			<th>类型</th>
+			<td>{{.Params.eip.type}}</td>
+		</tr>
+		{{if .Params.eip.category}}
+		<tr>
+			<th>分类</th>
+			<td>{{.Params.eip.category}}</td>
+		</tr>
+		{{end}}
+		<tr>
+			<th>创建时间</th>
+			<td>{{.Params.eip.created}}</td>
+		</tr>
+	</tbody>
+</table>
+
+{{ .Content }}
+
+<footer class=" footline">
+	{{with .Params.LastModifierDisplayName}}
+	<i class='fas fa-user'></i> <a href="mailto:{{ $.Params.LastModifierEmail }}">{{ . }}</a> {{with $.Date}} <i
+		class='fas fa-calendar'></i> {{ .Format "02/01/2006" }}{{end}}
+	</div>
+	{{end}}
+</footer>
+
+
+{{ partial "footer.html" . }}
