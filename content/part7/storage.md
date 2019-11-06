@@ -122,7 +122,7 @@ contract StorageExample2 {
 4. 此时，插槽 1 剩余 15 字节，可以继续存放 d 的一字节。
 5. 插槽 1 还剩余 14 字节，但是 e 需要 16 字节存储，插槽 1 已不能容纳 e。需将 e 存放到下一个插槽 2 中。
 
-![20191104145715.png](http://learnblockchain.cn/static/20191104145715.png)
+![合约的存储布局](https://learnblockchain.cn/static/2019-11-6-21-56-39.png)!
 
 上图是合约的存储布局，以及被紧凑存放在插槽 1 中的 b、c、d 他们将依次从右往左存储于插槽 1 中。读取插槽 1 中的数据得到 data 为 `0x0000000000000000000000000000010000000000000000000000000000000d0c`
 
@@ -209,9 +209,9 @@ str = web3.toUtf8(b1+b2.substr(2))
 至此，我们已得到完整的 b 字符串值。bytes 也是相同方式，不再复述。
 
 
-## 动态数组
+### 动态数组
 
-动态数组 T[] 由两部分数据组成，数组长度和元素值。在 Solidity 中定义动态数组后，将在定义的插槽位置存储数组元素数量，
+动态数组 `T[]` 由两部分组成，数组长度和元素值。在 Solidity 中定义动态数组后，将在定义的插槽位置存储数组元素数量，
 元素数据存储的起始位置是：keccak256(slot)，每个元素需要根据下标和元素大小来读取数据。
 
 ```solidity
@@ -223,39 +223,130 @@ contract StorageExample4 {
    uint256[] public b =  [401,402,403,405,406];
 }
 ```
+
 上面有定义两个数组 a 和 b，都有 5 个相同初始值。
 a 和 b 在插槽 0 和 1 上分别存储他们的长度值 5，而数组元素值存储有所不同（紧缩存储）。
-因为数组 a 元素宽度(width)是 2 字节，因此一个插槽可以存储 16 个元素，而数组 b 则只能是一个插槽存储一个元素。
+因为数组 a 元素宽度(width)是 2 字节，因此一个插槽可以存储 16 个元素，而数组 b 则只能是一个插槽存储一个元素（uint256 需要用 32 字节存储）。
 
 已知:
 
 + keccak256(0)=0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563
 + keccak256(1)=0xb10e2d527612073b26eecdfd717e6a320cf44b4afac2b0732d9fcbe2b7fa0cf6
 
-如果要获取 a[3] 值，首先确认 a[3]的存储位置 `keccak256(0)+ index* width / 32` = 0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563
-可得到插槽中存储的数据：0x0000000000000000000000000000000000000000000001960195019301920191。
+如果要获取 a[3] 值，首先确认 a[3]的存储位置:
+
+`keccak256(0)+ index* width / 32` = 0x290decd9548b62a8d60345a988386fc84ba6bc95484008f6362f93160ef3e563
+
+可得到插槽中存储的数据:
+
+data=0x0000000000000000000000000000000000000000000001960195019301920191
 
 根据第一项以低位对齐(右对齐)的存储方式，可以知道 a[3] 需要向左偏移 `index*width`= 6 个字节，值为`data.substr(32*2+2-3*2*2,2*2)`
 
+![以太坊技术与实现-图1](https://learnblockchain.cn/static/以太坊技术与实现-图2019-11-6-22-7-15!de?width=600px)
+
 同样取值b[3]，因为元素宽度为 32，一个插槽就是存储一个元素。
 
-```js
-var aStart= "" keccak256(slot)
+
+### 字典 Mapping
+
+字典的存储布局是直接存储 Key 对应的 value，每个 Key 对应一份存储。一个 Key 的对应存储位置是 `keccak256(key.slot)`，其中`.`是拼接符合，实际上编码时进行拼接`abi.encodePacked(key,slot)`;
+可直接获得  map[key] 的存储位置。
+
+```solidity
+contract StorageExample5 {
+   mappping(uint256 => string) a;
+
+   constructor()public {
+       a["u1"]=18;
+       a["u2"]=19;
+   }
+}
 ```
 
-那么在 插槽 0 上将存放值是 5 ("0x0000000000000000000000000000000000000000000000000000000000000005")。
-因为 ids 元素是 uint16 占用两字节，那么ids[3] 则存储在 keccak256(0)+3*2 插槽中。
+如上面示例中，字段 a 定义在 0 插槽，初始化合约时有添加两个key u1 和 u2。那么 u1的存储位置就是：
+`keccak256("u1",0)`，u2 存储在 ``keccak256("u2",0)``中。调用 `SlotHelp.mappingValueSlotString(0,"u1")` ([见下][1]) 可计算出存储位置，分别是：
 
+1. keccak256("u1",0) = 0x666a0898319983ee51fdb14dca8cb63a131f53ef02192cda872152628bb15fd7
+2. keccak256("u2",0) = 0xb8f3bac818d08a6d5c3fc2cecdc63de9db8e456c49b3877ea67282ec9d7ef62c
 
+取值为：
 
+```js
+addr="0xB793D15FF1e9F652D66a58E7C963c4c6766DA193" #部署后的合约地址
+web3.eth.getStorageAt(addr,'0x666a0898319983ee51fdb14dca8cb63a131f53ef02192cda872152628bb15fd7')
+// Result
+// "0x0000000000000000000000000000000000000000000000000000000000000012"
+web3.eth.getStorageAt(addr,'0xb8f3bac818d08a6d5c3fc2cecdc63de9db8e456c49b3877ea67282ec9d7ef62c')
+// Result
+// "0x0000000000000000000000000000000000000000000000000000000000000013"
+```
 
-##
-1. 如果可能的话，存储需求少于 32 字节的多个变量会被打包到一个 存储插槽storage slot 中
+{{% notice info %}}
+思考：为何在合约中无法对 mapping 进行遍历？可在评论中留言。
+{{% /notice %}}
 
+### 组合型
 
+当前数据类型不是基础类型时，是进行内部递归处理，遵守上述规则来存储数据的。比如 结构、map 的 value 是一个结构等等。下面通过一个稍微复杂的合约来画出合约的存储分布。
 
-solt="0x0000000000000000000000000000000000000000000000000000000000000001"
-web3.eth.getStorageAt('0x24aA059A03bC2f1EdC8412f673b6Bd3319A2c5CB',web3.sha3(solt))
+```solidity
+pragma solidity >0.5.0;
+
+contract StorageExample6 {
+    address owner;
+
+    struct UserInfo {
+        string name;
+        uint8 age;
+        uint8 weight;
+        uint256[] orders;
+        uint64[3] lastLogins;
+    }
+
+   mapping(address => UserInfo) public users;
+
+   constructor()public {
+       owner=msg.sender;
+
+       addUser(owner,"admin",17,120);
+   }
+
+   function addUser(address user,string memory name,uint8 age,uint8 weight) public {
+       require(age>0 && age <100 ,"bad age");
+
+       uint256[] memory orders;
+       uint64[3] memory logins;
+
+       users[user] = UserInfo({
+           name: name, age:    age,  weight:weight,
+           orders:orders,  lastLogins:logins
+       });
+   }
+   function addLog(address user,uint64 id1,uint64 id2,uint64 id3) public{
+       UserInfo storage u = users[user];
+       assert(u.age>0);
+
+       u.lastLogins[0]=id1;
+       u.lastLogins[1]=id2;
+       u.lastLogins[2]=id3;
+   }
+
+   function addOrder(address user,uint256 orderID) public{
+       UserInfo storage u = users[user];
+       assert(u.age>0);
+       u.orders.push(orderID);
+   }
+   function getLogins(address user) public view returns (uint64,uint64,uint64){
+        UserInfo storage u = users[user];
+       return  (u.lastLogins[0],u.lastLogins[1],u.lastLogins[2]);
+   }
+   function getOrders(address user) public view returns (uint256[] memory){
+        UserInfo storage u = users[user];
+       return  u.orders;
+   }
+}
+```
 
 
 ## SlotHelp
@@ -263,11 +354,18 @@ web3.eth.getStorageAt('0x24aA059A03bC2f1EdC8412f673b6Bd3319A2c5CB',web3.sha3(sol
 ```solidity
 pragma solidity >0.5.0;
 
+
 contract SlotHelp {
 
     // 获取字符串的存储起始位置
-    function keccak256(uint256 slot) public pure returns (bytes32) {
+    function dataSolot(uint256 slot) public pure returns (bytes32) {
         bytes memory slotEncoded  = abi.encodePacked(slot);
+        return  keccak256(slotEncoded);
+    }
+
+    // 获取字符串 Key 的字典值存储位置
+    function mappingValueSlotString(uint256 slot,string memory key ) public pure returns (bytes32) {
+        bytes memory slotEncoded  = abi.encodePacked(key,slot);
         return  keccak256(slotEncoded);
     }
 }
@@ -277,3 +375,6 @@ contract SlotHelp {
 1. https://solidity.readthedocs.io/en/v0.5.10/types.html
 2. https://medium.com/@hayeah/diving-into-the-ethereum-vm-the-hidden-costs-of-arrays-28e119f04a9b
 3.
+
+
+[1]: #slothelp
