@@ -17,11 +17,11 @@ description: "详解以太坊Solidity合约数据存储布局"
 Solidity 合约数据存储采用的是为合约每项数据指定一个可计算的存储位置，数据存在容量为2<sup>256</sup>超级数组中，数组中每项数据的初始值为 0。
 你不用担心存储会占用太多空间，实际上存储是稀疏的。在存储到 KV 数据库中时只有非零(空值)数据才会被写入。
 
-![以太坊数据存储](https://learnblockchain.cn/static/2019-11-3-21-30-13.png?width=600px&heigth=400px)
+![以太坊数据存储](https://learnblockchain.cn/static/2019-11-3-21-30-13.png!de?width=600px&heigth=400px)
 
 每个插槽可存储 32 字节数据：
 
-![](https://learnblockchain.cn/static/2019-11-3-21-44-32.png?width=600px)
+![](https://learnblockchain.cn/static/2019-11-3-21-44-32.png!de?width=600px)
 
 当某项数据超过 32 字节，则需要占用多个连续插槽(data.length/32)。
 因此，当数据长度是已知时，则存储位置将在编译时指定存储位置，而对于长度不确定的类型（如 动态数组、字典）则按一定规则计算存储位置。
@@ -61,7 +61,7 @@ contract StorageExample {
 而字段 c 是定长 2 且元素类型是 uint，需要用 32 字节存储一个元素，一共需要占用两个插槽 2和 3。
 字段 d 是一个结构类型数据，其中 Entry 的数据长度也是确定的 64 字节，因此字段 d 也占用两个插槽 4 和 5。
 
-![](https://learnblockchain.cn/static/2019-11-3-22-19-1.png?width=400px)
+![](https://learnblockchain.cn/static/2019-11-3-22-19-1.png!de?width=400px)
 
 当数据类型是值类型（固定大小的值）时，编译时将严格根据字段排序顺序，给每个要存储的值类型数据预分配存储位置。
 相当于已提前指定了固定不变的数据指针。
@@ -371,7 +371,7 @@ contract StorageExample6 {
 }
 ```
 
-![Solidity 合约存储布局示例.png](http://learnblockchain.cn/static/20191107160911.png)
+![Solidity 合约存储布局示例.png](http://learnblockchain.cn/static/20191107160911.png!de)
 
 上图是针对上面合约 StorageExample6 而绘制的数据存储布局，基本包括了常见定义的数据存储。你可以根据前面所将的取数方式来尝试部署合约和读取合约数据。
 有任何疑问，都可以在下方留言。
