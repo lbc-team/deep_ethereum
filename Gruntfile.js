@@ -1,11 +1,12 @@
 'use strict';
 
 module.exports = function (grunt) {
+    require('time-grunt')(grunt);
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-gh-pages');
     grunt.loadNpmTasks('grunt-contrib-htmlmin');
-    grunt.loadNpmTasks('grunt-contrib-cssmin'); 
+    grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-exec');
 
     var SOURCE_DIR = 'public'
@@ -31,7 +32,7 @@ module.exports = function (grunt) {
                     //将多个内容拼接到多条命令执行
                     return [
                         ['upx','login',process.env.UPX_BUCKET,process.env.UPX_OP,process.env.UPX_PWD].join(" "),
-                        ['upx','-q','sync','-w 10',SOURCE_DIR,storagepath].join(" ") 
+                        ['upx','-q','sync','-w 10',SOURCE_DIR,storagepath].join(" ")
                     ].join('&&');
                 },
             }
@@ -54,7 +55,7 @@ module.exports = function (grunt) {
         },
         cssmin: {
             options: {
-                keepSpecialComments: 0, 
+                keepSpecialComments: 0,
             },
             target: {
                  files: [
@@ -112,13 +113,13 @@ module.exports = function (grunt) {
 
     grunt.registerTask('check-deploy', function () {
         // need this
-        this.requires(['build']); 
+        this.requires(['build']);
         // only deploy under these conditions
         if (process.env.TRAVIS === 'true' && process.env.TRAVIS_SECURE_ENV_VARS === 'true' && process.env.TRAVIS_PULL_REQUEST === 'false') {
             grunt.log.writeln('executing deployment');
             // queue deploy
             // grunt.task.run('gh-pages:deploy');
-            grunt.task.run('exec:upxdeploy'); 
+            grunt.task.run('exec:upxdeploy');
         }
         else {
             grunt.log.writeln('skipped deployment');
