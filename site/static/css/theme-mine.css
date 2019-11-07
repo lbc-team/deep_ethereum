@@ -7,7 +7,7 @@
     --MAIN-ANCHOR-color: #1C90F3; /* color of anchors on titles */
 
     --MENU-HEADER-BG-color:#fafafa;; /* Background color of menu header */
-    --MENU-HEADER-BORDER-color:rgba(0,0,0,.07); /*Color of menu header border */ 
+    --MENU-HEADER-BORDER-color:rgba(0,0,0,.07); /*Color of menu header border */
 
     --MENU-SEARCH-BG-color:#fafafa; /* Search field background color (by default borders + icons) */
     --MENU-SEARCH-BOX-color: #33a1ff; /* Override search field border color */
@@ -68,14 +68,14 @@ a:hover {
     background-color: var(--MAIN-LINK-HOVER-color);
 }
 #sidebar {
-    background-color: var(--MENU-SECTIONS-BG-color); 
+    background-color: var(--MENU-SECTIONS-BG-color);
     border-right: 1px solid var(--MENU-HEADER-BORDER-color);
 }
 #sidebar #header-wrapper {
     background: var(--MENU-HEADER-BG-color);
     color: var(--MENU-SEARCH-BOX-color);
     border-color: var(--MENU-HEADER-BORDER-color);
-    border-bottom: 1px solid var(--MENU-HEADER-BORDER-color); 
+    border-bottom: 1px solid var(--MENU-HEADER-BORDER-color);
     border-bottom-color: var(--MENU-HEADER-BORDER-color);
     font-weight: bold;
 }
@@ -84,8 +84,8 @@ a:hover {
     background: var(--MENU-SEARCH-BG-color);
 }
 #sidebar ul.topics > li.parent, #sidebar ul.topics > li.active {
-    background: var(--MENU-SECTIONS-ACTIVE-BG-color); 
-} 
+    background: var(--MENU-SECTIONS-ACTIVE-BG-color);
+}
 #sidebar .searchbox * {
     color: var(--MENU-SEARCH-BOX-ICONS-color);
 }
@@ -114,6 +114,11 @@ a:hover {
     color: #f8f8f2;
 }
 
+div.notices.tip ol {
+    margin-top: 0px;
+    border-top: 0px;
+    background: #E6F9E6;
+}
 
 /*  cod 高亮样式，来自： hugo gen chromastyles --style=monokai */
 /* Background */ .chroma { color: #f8f8f2; background-color: #272822 }
