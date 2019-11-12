@@ -108,7 +108,7 @@ type ChainConfig struct {
 以太坊 homested 版本硬分叉高度。
 意味着从此高度开始，新区块受 homested 版本共识规则约束。
 因涉及共识变更，如果希望继续接受新区块则必须升级以太坊程序，属于区块链硬分叉。
-如果不原因接受共识变更，则可以独立使用新的 ChainID 继续原共识，且必须独立维护版本。
+如果不愿意接受共识变更，则可以独立使用新的 ChainID 继续原共识，且必须独立维护版本。
 
 ### DAOForkBlock和DAOForkSupport
 
