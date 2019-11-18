@@ -9,7 +9,7 @@ branches:
   - master
 before_install:
 - mkdir work
-- export PATH=$PATH:$PWD/work/  
+- export PATH=$PATH:$PWD/work/
 install:
 - wget http://collection.b0.upaiyun.com/softwares/upx/upx-linux-amd64-v0.2.3
   -O $PWD/work/upx
@@ -19,7 +19,7 @@ install:
 - sudo dpkg -i $PWD/work/hugo.deb
 - npm install
 script:
-- grunt deploy
+- grunt deploy --verbose
 
 env:
   global:
