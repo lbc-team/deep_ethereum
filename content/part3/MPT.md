@@ -232,7 +232,7 @@ var nilValueNode = valueNode(nil) //空白节点
 
 上面已描述 MPT 在内存中的结构，下面我们以 romane、romanus、romulus 为示例数据，来讲解是何如计算出 MPT 树的一个树根 Root 值的。
 
-![以太坊技术与实现-图2019-12-2-22-20-32](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-2-22-20-32!de?width=600px)
+![以太坊技术与实现-以太坊 MPT 树结构布局示例](https://learnblockchain.cn/static/20191203160644.png!de?width=700px)
 
 上图是三项数据的业务 Key 经过 HP 编码后，写入 MPT 树后所形成的 MPT 树结构布局。HP表和树的虚线连接表示树路径的生成依据，这是根据前面所描述的 MPT 生成规则而形成的树结构。在树中，一共有6 个节点，其中节点 1 和 3 为扩展节点，节点 2 和 5 为分支节点，节点 4 和 6 为叶子节点。可以看到在分支节点 5 中的 value 位置存放着业务 key “romane” 所对应的值“罗马”，但业务 key “romanus”和“romulus” 则存放在独立的叶子节点中。
 
