@@ -489,17 +489,102 @@ func (self *stateObject) updateTrie(db Database) Trie {
 
 ### StateDB 如何完成持久化
 
-在区块中，将交易作为输入条件，来根据一系列动作修改状态。在完成区块挖矿前，只是获得在内存中的状态树的 Root 值。
+在区块中，将交易作为输入条件，来根据一系列动作修改状态。
+在完成区块挖矿前，只是获得在内存中的状态树的 Root 值。
+StateDB 可视为一个内存数据库，状态数据先在内存数据库中完成修改，所有关于状态的计算都在内存中完成。
+在将区块持久化时完成有内存到数据库的更新存储，此更新属于增量更新，仅仅修改涉及到被修改部分。
+
+
+```go
+// core/state/statedb.go:680
+func (s *StateDB) Commit(deleteEmptyObjects bool) (root common.Hash, err error) {
+	defer s.clearJournalAndRefund()
+
+	for addr := range s.journal.dirties {//①⑧⑨⑩
+		s.stateObjectsDirty[addr] = struct{}{}
+	}
+	for addr, stateObject := range s.stateObjects {//②
+		_, isDirty := s.stateObjectsDirty[addr]
+		switch {
+		case stateObject.suicided || (isDirty && deleteEmptyObjects && stateObject.empty()):
+			//③
+			s.deleteStateObject(stateObject)
+		case isDirty:
+			if stateObject.code != nil && stateObject.dirtyCode {//④
+				s.db.TrieDB().InsertBlob(common.BytesToHash(stateObject.CodeHash()), stateObject.code)
+				stateObject.dirtyCode = false
+			}
+			if err := stateObject.CommitTrie(s.db); err != nil {//⑤
+				return common.Hash{}, err
+			}
+			s.updateStateObject(stateObject)//⑥
+		}
+		delete(s.stateObjectsDirty, addr)
+	}
+	//...
+	root, err = s.trie.Commit(func(leaf []byte, parent common.Hash) error {//⑦
+		var account Account
+		if err := rlp.DecodeBytes(leaf, &account); err != nil {
+			return nil
+		}
+		if account.Root != emptyRoot {
+			s.db.TrieDB().Reference(account.Root, parent)
+		}
+		code := common.BytesToHash(account.CodeHash)
+		if code != emptyCode {
+			s.db.TrieDB().Reference(code, parent)
+		}
+		return nil
+	})
+	return root, err
+}
+```
+
+因为在修改某账户信息是，将会记录变更流水（journal），因此在提交保存修改时只需要将在流水中存在的记录作为修改集①。
+所有访问过的账户信息，均被记录在 `stateObjects` 中，只需要遍历此集合 ② 便可以提交所有修改。
+
+当合约账户被销毁或者外部账户余额为 0 时可以从树中移除该账户，避免空账户影响树操作性能 ③。
+这里仅仅是从树中移除，并不能直接从持久层抹除。因为旧 State 依然依赖此账户，一旦缺失将因为数据不完整而导致 OpenTrie 无法加载。同时，可方便其他节点同步 State 时不会缺失数据。
+
+另外，如果集合中的账户有变更（isDirty），则需要提交此账户。如果该账户是刚部署的新合约(dirtyCode)④，则需要根据合约代码 HASH 作为键，存储对应的合约字节码。同时还将该账户专属的存储树提交⑤，而账户属性也许有被修改，因此需要将此信息也更新到账户树中⑥。
+
+处理完每个需要提交的账户内容外，最后需要将账户树提交⑦。在提交过程中涉及账户内容作为叶子节点，在发送变动时，将更新账户节点和父节点的关系。记录关系的原因是用于在树的缓存使用，仅可能快速定位所需数据位置和快速释放，以便降低 GC 压力。
+
+在持久化 StateDB 时只对内存中存在的账户进行更新。
+
+![以太坊技术与实现-图以太坊 State 库读写关系](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-18-21-56-7!de?width=600px)
+
+如上图所示，上半部分均属于内存操作，仅仅在 `stateDB.Commit()` 时才将状态通过树提交到 leveldb 中。
 
 ### StateDB 如何回滚状态
 
-待完成
+在将交易打包到区块中，当其中一笔交易执行失败时，此交易将不会包含到此区块中，同时需要回退状态到执行此交易前的状态。
+下面代码是挖矿模块处理交易的逻辑代码。
+
+```go
+snap := w.current.state.Snapshot()
+receipt, _, err := core.ApplyTransaction(w.config, w.chain, &coinbase, w.current.gasPool, w.current.state, w.current.header, tx, &w.current.header.GasUsed, *w.chain.GetVMConfig())
+if err != nil {
+	w.current.state.RevertToSnapshot(snap)
+	return nil, err
+}
+```
+
+在执行`ApplyTransaction`前，先对 State 进行快照，如果执行交易失败，则将恢复状态（`RevertToSnapshot`）。 从这里可以看出，StateDB 实现回退的两个关键是：创建快照（Snapshot）、恢复到指定快照（RevertToSnapshot）。
+
+如前面所说，对 State 的任何修改都将产生修改日志。形同于关系数据库的 log 文件，对数据库的操作都将产生日志流水。
+可以根据日志文件恢复数据库。StateDB 也采用同样的机制，
+
+![以太坊技术与实现-图-以太坊 StateDB 回退](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-18-23-10-14!de?width=600px)
+
+如上图所示，在执行`Snapshot`时，将会获得一个状态版本号（snap），版本号对应记录该版本状态的变更日志索引位置。当需要恢复状态到此版本时，只需要版本的日志索引位置以上的所有变更日志从最新到最旧顺序依次回退即可。
+
+从上图也可看到，变更日志有多重类型，每种类型均提供了回退(revert)方法。比如变更余额的流水中将会记录变更前的值，回退时只需要将该账户的余额重置到变更前的值即可。
 
 
 ## StateDB 如何校验数据
 
-待完成
-
+在轻节点中，因为本地并不存储状态数据。但有必须校验某数据的合法性，这依赖于默克尔树的校验。 StateDB 仅提供数据的读取实现。因此，关于校验数据的合法性将在另外一篇文章中介绍。
 
 ## 参考资料
 
