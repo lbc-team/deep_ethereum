@@ -33,7 +33,7 @@ Merkle Tree(默克尔树) 用于保证数据安全，Patricia Tree(基数树,也
 
 Trie 这个术语来自于re Trie val。根据词源学， Trie 的发明者Edward Fredkin把它读作/ˈtriː/ "tree"。但是，其他作者把它读作/ˈtraɪ/ "try"。如图所示：
 
-![以太坊技术与实现-图2019-11-17-22-25-43](https://learnblockchain.cn/static/以太坊技术与实现-图2019-11-17-22-25-43!de?width=300px)
+![以太坊技术与实现-图2019-11-17-22-25-43](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-11-17-22-25-43!de?width=300px)
 
 在图示中，键标注在节点中，值标注在节点之下。每一个完整的英文单词对应一个特定的整数。 Trie 可以看作是一个确定有限状态自动机，尽管边上的符号一般是隐含在分支的顺序中的。键不需要被显式地保存在节点中。图示中标注出完整的单词，只是为了演示 Trie 的原理。
 
@@ -46,7 +46,7 @@ Trie 中的键通常是字符串，但也可以是其它的结构。 Trie 的算
 在[压缩前缀树（基数树）](https://baike.baidu.com/item/基数树/22853708)中，键值是通过树到达相应值的实际路径值。
 也就是说，从树的根节点开始，键中的每个字符会告诉您要遵循哪个子节点以获取相应的值，其中值存储在叶节点中，叶节点终止了穿过树的每个路径。假设键是包含 N 个字符的字母，则树中的每个节点最多可以有 N 个子级，并且树的最大深度是键的最大长度。
 
-![以太坊技术与实现-图2019-11-17-23-24-32](https://learnblockchain.cn/static/以太坊技术与实现-图2019-11-17-23-24-32!de?width=300px)
+![以太坊技术与实现-图2019-11-17-23-24-32](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-11-17-23-24-32!de?width=300px)
 
 虽然基数树使得以相同字符序列开头的键的值在树中靠得更近，但是它们可能效率很低。
 例如，当你有一个超长键且没有其他键与之共享前缀时，即使路径上没有其他值，但你必须在树中移动（并存储）大量节点才能获得该值。
@@ -98,24 +98,24 @@ var nilValueNode = valueNode(nil) //空白节点
 
 
 下图是 key 有特定的使用场景，基本支持逆向编码，在下面的讲解中 Key 在不同语义下特指的类型有所不同。
-![图：以太坊 MPT 中几类 Key](https://learnblockchain.cn/static/20191123215406.png!de?width=600px)
+![图：以太坊 MPT 中几类 Key](https://img.learnblockchain.cn/book_geth/20191123215406.png!de?width=600px)
 
 
 ### 节点结构改进
 
 当我们把一组数据（romane、romanus、romulus、rubens、ruber、rubicon、rubicunds）写入基数树中时，得到如下一颗基数树：
 
-![](https://learnblockchain.cn/static/20191122001418.png!de?width=500px)
+![](https://img.learnblockchain.cn/book_geth/20191122001418.png!de?width=500px)
 
 在上图的基数树中，持久化节点，有 13 次 IO。数据越多时，节点数越多，IO 次数越多。另外当树很深时，可能需要遍历到树的底部才能查询到数据。
 面对此效率问题，以太坊在树中加入了一种名为**分支节点**(branch node) 的节点结构，将其子节点直接包含在自身的数据插槽中。
 
-![](https://learnblockchain.cn/static/20191122235430.png!de?width=500px)
+![](https://img.learnblockchain.cn/book_geth/20191122235430.png!de?width=500px)
 
 这样可缩减树深度和减少IO次数，特别是当插槽中均有子节点存在时，改进效果越明显。
 下图是上方基数树在采用分支节点后的树节点逻辑布局：
 
-![](https://learnblockchain.cn/static/20191122232439.png!de?width=400px&heigth=400px)
+![](https://img.learnblockchain.cn/book_geth/20191122232439.png!de?width=400px&heigth=400px)
 
 从图中可以看出节点数量并无改进，仅仅是改变了节点的存放位置，节点的分布变得紧凑。图中大黑圆圈均为分支节点，它包含一个或多个子节点，
 这降低了 IO 和查询次数，在上图中，持久化 IO 只有 6 次，低于基数树的 12 次。
@@ -126,7 +126,7 @@ var nilValueNode = valueNode(nil) //空白节点
 因此，key 长度为 32 字节，每个字节的值范围是[0 - 255]。 如果在分支节点中使用 256 个插槽，空间开销非常高，造成浪费，毕竟空插槽在持久化时也需要占用空间。同时超大容量的插槽，也会可能使得持久化数据过大，可能会造成读取持久化数据时占用过多内存。
 如果将 Key 进行[Hex 编码](#hex-encoding)，每个字节值范围被缩小到 [0-15] 内(4bits)。这样，分支节点只需要 16 个插槽来存放子节点。
 
-![](https://learnblockchain.cn/static/20191123004006.png!de?width=500px)
+![](https://img.learnblockchain.cn/book_geth/20191123004006.png!de?width=500px)
 
 上图中 0 - f 插槽索引是半字节值，也是 Key 路径的一部分。虽然一定程度上增加了树高，但降低了分支节点的存储大小，也保证了一定的分支节点合并量。
 
@@ -232,14 +232,14 @@ var nilValueNode = valueNode(nil) //空白节点
 
 上面已描述 MPT 在内存中的结构，下面我们以 romane、romanus、romulus 为示例数据，来讲解是何如计算出 MPT 树的一个树根 Root 值的。
 
-![以太坊技术与实现-以太坊 MPT 树结构布局示例](https://learnblockchain.cn/static/20191203160644.png!de?width=700px)
+![以太坊技术与实现-以太坊 MPT 树结构布局示例](https://img.learnblockchain.cn/book_geth/20191203160644.png!de?width=700px)
 
 上图是三项数据的业务 Key 经过 HP 编码后，写入 MPT 树后所形成的 MPT 树结构布局。HP表和树的虚线连接表示树路径的生成依据，这是根据前面所描述的 MPT 生成规则而形成的树结构。在树中，一共有6 个节点，其中节点 1 和 3 为扩展节点，节点 2 和 5 为分支节点，节点 4 和 6 为叶子节点。可以看到在分支节点 5 中的 value 位置存放着业务 key “romane” 所对应的值“罗马”，但业务 key “romanus”和“romulus” 则存放在独立的叶子节点中。
 
 当我们执行 trie.Commit 时将获得一个 Hash 值，称之为 树的 Root 值，这个 Root 值是如何得到的呢？
 Root 值算法源自默克尔树（Merkle Tree），在默克尔树中，树根值是由从子叶开始不断进行哈希计算得到最终能代表这棵树数据的哈希值。
 
-![以太坊技术与实现-图-默克尔树](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-2-23-1-25!de?width=600px)
+![以太坊技术与实现-图-默克尔树](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-2-23-1-25!de?width=600px)
 
 同样在计算 MPT 树的 Root 值是也是如此，在 MPT 中一个节点的哈希值，是节点内容经 RLP 编码后的 Keccak256 哈希值。当对一个节点进行哈希计算遵循如下规则：
 
@@ -249,7 +249,7 @@ Root 值算法源自默克尔树（Merkle Tree），在默克尔树中，树根�
 
 根据上面的规则，我们可以得到上面 MPT 树进行哈希计算时的节点分布：
 
-![以太坊技术与实现-图-以太坊 MPT 树的哈希计算](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-2-23-42-11!de?width=700px)
+![以太坊技术与实现-图-以太坊 MPT 树的哈希计算](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-2-23-42-11!de?width=700px)
 
 图中，可哈希的节点只有 4 个，而叶子节点 4 和 6 则直接属于分支节点的一部分参与哈希计算。MPT 的 Root 值是 MPT 树根节点的哈希值。在本示例中，Root 节点为 节点 1，Hash(节点 1)=`0x84f3c5......80ef13` 即为 MPT 的 Root 值。扩展节点 1 和 3 的 key 在哈希计算时有进行 HP 编码。需要编码的原因是为了区分扩展节点的 value 是叶子节点还是分支节点的区别，具体见 [HP 编码规则](#hp)。
 

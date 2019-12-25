@@ -15,7 +15,7 @@ description: ""
 
 `有限自动机` （Finite Automata Machine）是计算机科学的重要基石，它在软件开发领域内通常称作`有限状态机`（ Finite State Machine，缩写 FSM），简称**状态机**，是表示有限个状态以及在这些状态之间的转移和动作等行为的数学模型。
 
-![以太坊技术与实现-图状态机](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-7-23-34-54!de?width=400px)
+![以太坊技术与实现-图状态机](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-7-23-34-54!de?width=400px)
 
 状态存储着关于过去的信息，可反映从系统开始到现在时刻的状态变化。状态即可归纳为4 个要素：
 
@@ -39,11 +39,11 @@ description: ""
 
 世界状态(state)由无数的账户信息组成，每个账户均存在一个唯一的账户信息。账户信息中存储着账户余额、Nonce、合约哈希、账户状态等内容，每个账户信息通过账户地址影射。 从创世状态开始，随着将交易作为输入信息，在预设协议标准（条件）下将世界态推进到下一个新的状态中。
 
-![以太坊技术与实现-状态](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-7-23-35-20!de?width=600px)
+![以太坊技术与实现-状态](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-7-23-35-20!de?width=600px)
 
 当你需要查询某账户余额时，将从从世界状态中定位到目标账户的账户状态，便可从中查询到在现态中账户余额。而当你转账 5 ETH 给张三时，则将使得状态从 `{你: 8 ETH,张三：2 ETH}` 转移到 `{你: 3 ETH,张三：7 ETH}` 状态。
 
-![以太坊技术与实现-图-状态转移](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-7-23-36-4!de?width=600px)
+![以太坊技术与实现-图-状态转移](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-7-23-36-4!de?width=600px)
 
 交易被矿工收集到区块中的过程，就是矿工在执行状态转换的过程。即使无交易，矿工也可以直接将世界状态迁移到新状态中，比如挖出空快。
 
@@ -65,7 +65,7 @@ description: ""
 3. storageRoot: 表示保存了账户存储内容的 MPT 树的根节点的哈希值。
 4. codeHash: 表示账户的 EVM 代码哈希值，当这个地址接收到一个消息调用时，这些代码会被执行; 它和其它字段不同，创建后不可更改。如果 codeHash 为空，则说明该账户是一个简单的外部账户，只存在 nonce 和 balance。
 
-![以太坊技术与实现-图-状态](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-7-23-36-34!de?width=600px)
+![以太坊技术与实现-图-状态](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-7-23-36-34!de?width=600px)
 
 如上图所示，在以太坊中不止一颗默克尔树，所有账户状态通过以账户地址为键，维护在表示世界状态的树中。所有账户也存在一颗表示此账户的存储数据的树，此树是独立唯一的。
 
@@ -552,7 +552,7 @@ func (s *StateDB) Commit(deleteEmptyObjects bool) (root common.Hash, err error) 
 
 在持久化 StateDB 时只对内存中存在的账户进行更新。
 
-![以太坊技术与实现-图以太坊 State 库读写关系](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-18-21-56-7!de?width=600px)
+![以太坊技术与实现-图以太坊 State 库读写关系](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-18-21-56-7!de?width=600px)
 
 如上图所示，上半部分均属于内存操作，仅仅在 `stateDB.Commit()` 时才将状态通过树提交到 leveldb 中。
 
@@ -575,7 +575,7 @@ if err != nil {
 如前面所说，对 State 的任何修改都将产生修改日志。形同于关系数据库的 log 文件，对数据库的操作都将产生日志流水。
 可以根据日志文件恢复数据库。StateDB 也采用同样的机制，
 
-![以太坊技术与实现-图-以太坊 StateDB 回退](https://learnblockchain.cn/static/以太坊技术与实现-图2019-12-18-23-10-14!de?width=600px)
+![以太坊技术与实现-图-以太坊 StateDB 回退](https://img.learnblockchain.cn/book_geth/以太坊技术与实现-图2019-12-18-23-10-14!de?width=600px)
 
 如上图所示，在执行`Snapshot`时，将会获得一个状态版本号（snap），版本号对应记录该版本状态的变更日志索引位置。当需要恢复状态到此版本时，只需要版本的日志索引位置以上的所有变更日志从最新到最旧顺序依次回退即可。
 
