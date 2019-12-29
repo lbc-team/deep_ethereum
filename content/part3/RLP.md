@@ -18,11 +18,13 @@ RLP(Recursive Length Prefix) 递归长度前缀编码是以太坊中最常使用
 RLP 编码算法定义在以太坊黄皮书中，记  $\mathbb{T}$ 为可能的数据结构集:
 
 <p>
+<!-- htmlmin:ignore -->
 \begin{array}{cc}
 \mathbb{T} & \equiv & \mathbb{L} \cup \mathbb{B} \\
 \mathbb{L} & \equiv & \{ \mathbf{t}: \mathbf{t} = ( \mathbf{t}[0], \mathbf{t}[1], ... ) \; \wedge \; \forall_{n < \lVert \mathbf{t} \rVert} \; \mathbf{t}[n] \in \mathbb{T} \} \\
 \mathbb{B} & \equiv & \{ \mathbf{b}: \mathbf{b} = ( \mathbf{b}[0], \mathbf{b}[1], ... ) \;\wedge \; \forall_{n < \lVert \mathbf{b} \rVert} \; \mathbf{b}[n] \in \mathbb{O} \}
 \end{array}
+<!-- htmlmin:ignore -->
 </p>
 
 其中 $\mathbb{O}$ 是字节集，因此：
@@ -34,9 +36,11 @@ RLP 编码算法定义在以太坊黄皮书中，记  $\mathbb{T}$ 为可能的�
 通过两个子方法定义名为 RLP 方法作为 RLP 编码算法。当输入值是一个字节数组时，用第一个子方法执行编码。当值是更多值的序列时，用第二个子方法执行编码。
 
 <p>
+<!-- htmlmin:ignore -->
 \begin{equation}
 \mathtt{\tiny RLP}(\mathbf{x}) \equiv \begin{cases} R_{\mathrm{b}}(\mathbf{x}) & \text{if} \quad \mathbf{x} \in \mathbb{B} \\ R_{\mathrm{l}}(\mathbf{x}) & \text{otherwise} \end{cases}
 \end{equation}
+<!-- htmlmin:ignore -->
 </p>
 
 使用第一个子方法编码时（要序列化的值是字节数组），RLP 编码采用以下三种形式之一：
@@ -48,6 +52,7 @@ RLP 编码算法定义在以太坊黄皮书中，记  $\mathbb{T}$ 为可能的�
 最终， $R_{\mathrm{b}}$ 定义为:
 
 <p>
+<!-- htmlmin:ignore -->
 \begin{eqnarray}
 R_{\mathrm{b}}(\mathbf{x}) & \equiv & \begin{cases}
 \mathbf{x} & \text{if} \quad \lVert \mathbf{x} \rVert = 1 \wedge \mathbf{x}[0] < 128 \\
@@ -57,6 +62,7 @@ R_{\mathrm{b}}(\mathbf{x}) & \equiv & \begin{cases}
 \mathtt{\tiny BE}(x) & \equiv & (b_0, b_1, ...): b_0 \neq 0 \wedge x = \sum_{n = 0}^{n < \lVert \mathbf{b} \rVert} b_{\mathrm{n}} \cdot 256^{\lVert \mathbf{b} \rVert - 1 - n} \\
 (a) \cdot (b, c) \cdot (d, e) & = & (a, b, c, d, e)
 \end{eqnarray}
+<!-- htmlmin:ignore -->
 </p>
 
 其中，$\mathtt{BE}$ 是将正整数值扩展为最小长度的高端字节数组的函数，点运算符是执行序列拼接。
@@ -70,6 +76,7 @@ R_{\mathrm{b}}(\mathbf{x}) & \equiv & \begin{cases}
 因此，我们通过正式定义如下 $R_{\mathrm{l}}$:
 
 <p>
+<!-- htmlmin:ignore -->
 \begin{eqnarray}
 R_{\mathrm{l}}(\mathbf{x}) & \equiv & \begin{cases}
 (192 + \lVert s(\mathbf{x}) \rVert) \cdot s(\mathbf{x}) & \text{if} \quad \lVert s(\mathbf{x}) \rVert < 56 \\
@@ -77,6 +84,7 @@ R_{\mathrm{l}}(\mathbf{x}) & \equiv & \begin{cases}
 \end{cases} \\
 s(\mathbf{x}) & \equiv & \mathtt{\tiny RLP}(\mathbf{x}_0) \cdot \mathtt{\tiny RLP}(\mathbf{x}_1) ...
 \end{eqnarray}
+<!-- htmlmin:ignore -->
 </p>
 
 下图则是公式的图形版：
