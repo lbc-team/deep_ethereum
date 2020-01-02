@@ -102,7 +102,7 @@ web3.toBigNumber(web3.eth.getStorageAt(contractAddr,0))
 2. 命令行运行开发节点： `./geth --dev --rpc --rpccorsdomain "*" console`
 3. 打开 https://remix.ethereum.org/ 编写合约
 4. 修改 remix IDE 的连接环境，选择后，直接点击确定即可。
-![20191107162515.png](http://learnblockchain.cn/static/20191107162515.png!de?width=400px)
+![20191107162515.png](https://img.learnblockchain.cn/book_geth/20191107162515.png!de?width=400px)
 5. 此时，remix 已经连接到第二步运行的 geth 中。
 {{% /notice %}}
 
@@ -371,7 +371,7 @@ contract StorageExample6 {
 }
 ```
 
-![Solidity 合约存储布局示例.png](http://learnblockchain.cn/static/20191107160911.png!de)
+![Solidity 合约存储布局示例.png](https://img.learnblockchain.cn/book_geth/20191107160911.png!de)
 
 上图是针对上面合约 StorageExample6 而绘制的数据存储布局，基本包括了常见定义的数据存储。你可以根据前面所将的取数方式来尝试部署合约和读取合约数据。
 有任何疑问，都可以在下方留言。

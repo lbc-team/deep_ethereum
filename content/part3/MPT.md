@@ -148,7 +148,7 @@ var nilValueNode = valueNode(nil) //空白节点
 
 下图是以太坊从 MPT 中查询查找某 Key 对应数据的流程图。
 
-![以太坊技术与实现-图-以太坊从 MPT 中查询查找某 Key 对应数据的流程图](http://learnblockchain.cn/static/20191127162304.png!de?width=600px)
+![以太坊技术与实现-图-以太坊从 MPT 中查询查找某 Key 对应数据的流程图](https://img.learnblockchain.cn/book_geth/20191127162304.png!de?width=600px)
 
 图中流程中，有几点需要稍微说明：
 
@@ -163,7 +163,7 @@ var nilValueNode = valueNode(nil) //空白节点
 
 插入数据包含新数据加入和旧数据修改。下图是往 MPT 中插入数据流程。
 
-![以太坊技术与实现-图-往 MPT 中插入数据](http://learnblockchain.cn/static/20191203155701.png!de?width=)
+![以太坊技术与实现-图-往 MPT 中插入数据](https://img.learnblockchain.cn/book_geth/20191203155701.png!de?width=)
 
 首先，插入空节点是无意义的，反而会使树变得臃肿。
 因此，当数据为空时，需从树中删除该数据节点。
@@ -180,7 +180,7 @@ var nilValueNode = valueNode(nil) //空白节点
 插入数据的过程，是深度递归遍历方式。先深度查找，抵达数据应处位置，再从下向上依次更新此路径上的节点。
 虽然只更新了路径中的相关节点，但这毕竟涉及多个节点的更新。从这一点上看，MPT 性能并不出色。
 
-![以太坊技术与实现-图-以太坊 MPT 树操作时的递归](http://learnblockchain.cn/static/20191127163603.png!de?width=400px)
+![以太坊技术与实现-图-以太坊 MPT 树操作时的递归](https://img.learnblockchain.cn/book_geth/20191127163603.png!de?width=400px)
 
 ### 删除数据
 
@@ -188,7 +188,7 @@ var nilValueNode = valueNode(nil) //空白节点
 比如，原本是一个分支节点下有两个子节点，现在删除一个子节点后，只有一个子节点的分支节点的存储是无意义的，需要移除并将剩余的子节点上移。
 下图是 MPT 中删除数据的流程图。
 
-![以太坊技术与实现-图- MPT中删除数据的流程图](http://learnblockchain.cn/static/20191203160005.png!de?width=600px)
+![以太坊技术与实现-图- MPT中删除数据的流程图](https://img.learnblockchain.cn/book_geth/20191203160005.png!de?width=600px)
 同样，删除数据也是深度递归遍历。先深度查找，抵达数据应处位置，再从下向上依次更新此路径上的节点。
 在删除过程中，主要是对删除后节点的调整。有两个原则：
 
@@ -203,16 +203,16 @@ var nilValueNode = valueNode(nil) //空白节点
 
 首先依次写入：romane、romanus、romulus 后树的变化如下：
 
-![以太坊技术与实现-图-20191127165135.png](http://learnblockchain.cn/static/20191127165135.png!de?width=600px)
+![以太坊技术与实现-图-20191127165135.png](https://img.learnblockchain.cn/book_geth/20191127165135.png!de?width=600px)
 
 图中的每一个圆圈均代表一个节点，只是节点的类型不同。需要注意的是，图中的红色字部分，实际是一个短节点（shortNode）。
 比如，红色的“roman“ 短节点的 key 为 roman, value 是分支节点。继续写入 rubens、ruber、rubicon 的变化过程如下：
 
-![以太坊技术与实现-图-20191127165900.png](http://learnblockchain.cn/static/20191127165900.png!de?width=800px)
+![以太坊技术与实现-图-20191127165900.png](https://img.learnblockchain.cn/book_geth/20191127165900.png!de?width=800px)
 
 最后，写入最后一个数据项 rubicunds 后可得到最终的 MPT 树结构：
 
-![以太坊技术与实现-图-20191127170214.png](http://learnblockchain.cn/static/20191127170214.png!de?width=400px)
+![以太坊技术与实现-图-20191127170214.png](https://img.learnblockchain.cn/book_geth/20191127170214.png!de?width=400px)
 
 {{% notice warning %}}
 注意，本过程演示中，为降低复杂度，省去了 key 的 Secure 和 Hex 过程。
@@ -314,7 +314,7 @@ func keybytesToHex(str []byte) []byte {
 
 Hex-Prefix 编码是一种任意量的半字节转换为数组的有效方式，还可以在存入一个标识符来区分不同节点类型。 因此 HP 编码是在由一个标识符前缀和半字节转换为数组的两部分组成。存入到数据库中存在节点 Key 的只有扩展节点和叶子节点，因此 HP 只用于区分扩展节点和叶子节点，不涉及无节点 key 的分支节点。其编码规则如下图：
 
-![以太坊技术与实现-以太坊 HP 编码规则](http://learnblockchain.cn/static/20191203143457.png!de?width=400px)
+![以太坊技术与实现-以太坊 HP 编码规则](https://img.learnblockchain.cn/book_geth/20191203143457.png!de?width=400px)
 
 前缀标识符由两部分组成：节点类型和奇偶标识，并存储在编码后字节的第一个半字节中。
 0 表示扩展节点类型，1 表示叶子节点，偶为 0，奇为 1。最终可以得到唯一标识的前缀标识：
