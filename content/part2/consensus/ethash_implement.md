@@ -144,7 +144,7 @@ func generateCache(dest []uint32, epoch uint64, seed []byte) {
 比如第一个周期内是填充出 16MB 内存。然后，将种子的哈希作为初始化值写入缓存的前64字节中❷，
 随后，以一个哈希值长度(64字节)为单位，依次进行哈希，将内容填充到缓存中，完成缓存内容的顺序填充。
 
-![缓存初始顺序填充](https://learnblockchain.cn/books/assets/2019-8-21-21-51-0.png!de)
+![缓存初始顺序填充](https://img.learnblockchain.cn/book_geth/2019-8-21-21-51-0.png!de)
 
 因为所有的计算都是不断进行哈希运算，因此不管在前面确认缓存大小，还是在缓存生成时都是以一个哈希值作为最新计算值。
 在计算缓存大小时，已经是根据哈希值长度进行缓存大小计算，所以缓存能被 64 整除，且整除值为一个素数。
@@ -159,7 +159,7 @@ func generateCache(dest []uint32, epoch uint64, seed []byte) {
 
 有了缓存，便可以来生成数据集。生成过程中不断重复从缓存中合成64字节的数据依次填充到数据中。
 
-![数据集生成流程](https://learnblockchain.cn/books/assets/2019-8-21-21-53-28.png!de)
+![数据集生成流程](https://img.learnblockchain.cn/book_geth/2019-8-21-21-53-28.png!de)
 
 1GB的数据集，则需要填充 16777216 次，每次都是根据索引 index 从缓存中获取 64 字节数据作为初始值，并进行依次哈希计算。
 
@@ -172,14 +172,14 @@ func generateCache(dest []uint32, epoch uint64, seed []byte) {
 这也就是为什么在搭建私有链时，刚开始时会看到一段“Generating DAG in progress” 的日志，直到生成数据集完成后，才可以开始挖矿。
 可以执行 geth 的子命令`dgeth  makedag 10000 /tmp/ethdag`来直接生成数据集。
 
-![以太坊生成数据集](https://learnblockchain.cn/books/assets/2019-8-21-22-30-35.png!de)
+![以太坊生成数据集](https://img.learnblockchain.cn/book_geth/2019-8-21-22-30-35.png!de)
 
 生成完毕后，文件夹 /tmp/ethdag 将大约有 1 GB 。下面是具体的算法实现，这里不展开代码讲解，因为是算法和 Go 语言的字节切片操作的混合体。
 
 ```go
-func generateDataset(dest []uint32, epoch uint64, cache []uint32) {  
+func generateDataset(dest []uint32, epoch uint64, cache []uint32) {
     //...
-	header := *(*reflect.SliceHeader)(unsafe.Pointer(&dest)) 
+	header := *(*reflect.SliceHeader)(unsafe.Pointer(&dest))
 	header.Len *= 4
 	header.Cap *= 4
 	dataset := *(*[]byte)(unsafe.Pointer(&header))
@@ -194,15 +194,15 @@ func generateDataset(dest []uint32, epoch uint64, cache []uint32) {
 	for i := 0; i < threads; i++ {
 		go func(id int) {
             defer pend.Done()
-            
-			keccak512 := makeHasher(sha3.NewLegacyKeccak512())  
+
+			keccak512 := makeHasher(sha3.NewLegacyKeccak512())
             batch := uint32((size + hashBytes*uint64(threads) - 1) / (hashBytes * uint64(threads)))
 			first := uint32(id) * batch
 			limit := first + batch
 			if limit > uint32(size/hashBytes) {
 				limit = uint32(size / hashBytes)
             }
-            
+
             percent := uint32(size / hashBytes / 100)
 			for index := first; index < limit; index++ {
 				item := generateDatasetItem(cache, index, keccak512)
@@ -217,8 +217,8 @@ func generateDataset(dest []uint32, epoch uint64, cache []uint32) {
 	pend.Wait()
 }
 
-func generateDatasetItem(cache []uint32, index uint32, keccak512 hasher) []byte { 
-	rows := uint32(len(cache) / hashWords) 
+func generateDatasetItem(cache []uint32, index uint32, keccak512 hasher) []byte {
+	rows := uint32(len(cache) / hashWords)
 	mix := make([]byte, hashBytes)
 
 	binary.LittleEndian.PutUint32(mix, cache[(index%rows)*hashWords]^index)
@@ -226,21 +226,21 @@ func generateDatasetItem(cache []uint32, index uint32, keccak512 hasher) []byte 
 		binary.LittleEndian.PutUint32(mix[i*4:], cache[(index%rows)*hashWords+uint32(i)])
 	}
 	keccak512(mix, mix)
- 
+
 	intMix := make([]uint32, hashWords)
 	for i := 0; i < len(intMix); i++ {
 		intMix[i] = binary.LittleEndian.Uint32(mix[i*4:])
-	} 
+	}
 	for i := uint32(0); i < datasetParents; i++ {
 		parent := fnv(index^i, intMix[i%16]) % rows
 		fnvHash(intMix, cache[parent*hashWords:])
-	} 
+	}
 	for i, val := range intMix {
 		binary.LittleEndian.PutUint32(mix[i*4:], val)
 	}
 	keccak512(mix, mix)
 	return mix
-} 
+}
 ```
 
 如果上面代码理不清，可以先看 Ethash 算法的伪代码描述：
@@ -267,7 +267,7 @@ def calc_dataset(full_size, cache):
 
 挖矿所需具备的数据集准备好后，则在每次需要挖出新块时，需要结合新区块链信息、数据集、随机数来进行数据聚合计算，
 如果此算法的输出 result 低于目标 target，则nonce有效。
-```go 
+```go
 // consensus/ethash/sealer.go:165
 digest, result := hashimotoFull(dataset.dataset, hash, nonce)
 if new(big.Int).SetBytes(result).Cmp(target) <= 0 {
@@ -287,7 +287,7 @@ if new(big.Int).SetBytes(result).Cmp(target) <= 0 {
 nonce++
 ```
 
-![挖矿哈希计算](https://learnblockchain.cn/books/assets/2019-8-21-23-15-58.png!de)
+![挖矿哈希计算](https://img.learnblockchain.cn/book_geth/2019-8-21-23-15-58.png!de)
 
 上图是一个大概的计算过程，具体算法也不太清楚设计方式。从 Ethash 算法介绍文档中有说明是在进行数据聚合计算时，
 是在内存中使用一个 128字节宽的“混合”，从整个数据集中重复顺序获取128个字节，并使用fnv函数将其与“混合”组合。
@@ -348,7 +348,7 @@ header.MixDigest = common.BytesToHash(digest)
 select {
 case found <- block.WithSeal(header):
 	logger.Trace("Ethash nonce found and reported", "attempts", nonce-seed, "nonce", nonce)
-//...	
+//...
 }
 ```
 
@@ -363,8 +363,8 @@ func (ethash *Ethash) VerifySeal(chain consensus.ChainReader, header *types.Head
 	return ethash.verifySeal(chain, header, false)
 }
 
-func (ethash *Ethash) verifySeal(chain consensus.ChainReader, header *types.Header, fulldag bool) error { 
-	//... 
+func (ethash *Ethash) verifySeal(chain consensus.ChainReader, header *types.Header, fulldag bool) error {
+	//...
 	number := header.Number.Uint64()
 
 	var (

@@ -14,7 +14,7 @@ weight: 20300
 
 下图是以太坊挖矿的主要环节，一环扣一环，缺一不可。
 
-![image-20190721114625930](https://learnblockchain.cn/books/assets/image-20190721114625930.png!de)
+![image-20190721114625930](https://img.learnblockchain.cn/book_geth/image-20190721114625930.png!de)
 
 以太坊 geth 项目中，关于挖矿逻辑，全部在 miner 包中，3个文件便清晰滴定义挖矿逻辑。所以，后面讲解挖矿业主要集中在这几个文件中。
 

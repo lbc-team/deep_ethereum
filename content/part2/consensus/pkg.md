@@ -37,7 +37,7 @@ consensus -> 共识算法包
 
 consensus 包下有两个共识算法包 ethash 和 clique，分别实现了定义在 consensus.go 文件中共识算法接口 Engin。
 
-![以太坊共识算法接口](https://learnblockchain.cn/books/assets/2019-8-18-10-55-32.png!de)
+![以太坊共识算法接口](https://img.learnblockchain.cn/book_geth/2019-8-18-10-55-32.png!de)
 
 接口方法分为两类：
 

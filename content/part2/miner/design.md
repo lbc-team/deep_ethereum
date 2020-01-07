@@ -8,7 +8,7 @@ weight: 20301
 
 以太坊 geth 项目中，关于挖矿逻辑，全部在 miner 包中，仅用3个文件便清晰滴定义挖矿逻辑。上一篇文章中，可以看到挖矿的主要环节也就几个。但是如何协商每个环节的处理，却在于架构设计。本文我先同大家讲解以太坊关于挖矿的架构设计。
 
-![以太坊Miner设计结构](https://learnblockchain.cn/books/assets/image-20190721223605124.png!de)
+![以太坊Miner设计结构](https://img.learnblockchain.cn/book_geth/image-20190721223605124.png!de)
 
 上图是以太坊 Miner 包中关于挖矿的核心结构。对外部仅仅开放了 Miner 对象，任何对挖矿的操作均通过 Miner 对象操作。而实际挖矿细节全部在 worker 实例中实现，同时将关键核心数据存储在 environment 中。
 
@@ -18,13 +18,13 @@ weight: 20301
 
 在创建worker 时，将在 worker 内开启四个 goroutine 来分别监听不同信号。
 
- ![以太坊Miner下监听信号](https://learnblockchain.cn/books/assets/image-20190721235307204.png!de)
+ ![以太坊Miner下监听信号](https://img.learnblockchain.cn/book_geth/image-20190721235307204.png!de)
 
 首先是 mainLoop ，将监听 newWork 、tx、chainSide 信号。newWork 表示将开始挖采下一个新区块。
 
 这个信号在需要重新挖矿时发出，而此信号来自于 newWorkLoop 。当收到newWork信号，矿工将立刻将当前区块作为父区块，来挖下一个区块。
 
-当收到来自交易池的tx信号时，如果已经是挖矿中，则可以忽略这些交易。因为交易一样会被矿工从交易池主动拿取。如果尚未开始挖矿，则有机会将交易暂时提交，并更新到state中。 
+当收到来自交易池的tx信号时，如果已经是挖矿中，则可以忽略这些交易。因为交易一样会被矿工从交易池主动拿取。如果尚未开始挖矿，则有机会将交易暂时提交，并更新到state中。
 
 同样，当 blockchain 发送变化（新区块）时，而自己当下的挖掘块中仅有极少的叔块，此时允许不再处理交易，而是直接将此叔块加入，立刻提交当前挖掘块。
 

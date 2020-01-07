@@ -1,7 +1,7 @@
 ---
 title: "以太坊交易池架构设计"
 menuTitle: "架构设计"
-date: 2019-07-31T22:58:46+08:00 
+date: 2019-07-31T22:58:46+08:00
 weight: 20201
 ---
 
@@ -15,7 +15,7 @@ weight: 20201
 
 下图是一笔交易从出生到交易进入区块的关键流程。
 
-![transaction-life](https://learnblockchain.cn/books/assets/transaction-life.png)
+![transaction-life](https://img.learnblockchain.cn/book_geth/transaction-life.png)
 
 首先，用户可通过以太坊钱包或者其他调用以太坊节点API (eth_sendRawTransaction等)发送交易到一个运行中的以太坊 geth 节点。
 
@@ -25,7 +25,7 @@ weight: 20201
 
 如果邻近节点，不是矿工，也无妨。因为任何节点会默认将接受到得合法交易及时发送给邻近节点。得益于P2P网络，一笔交易平均在6s内扩散到整个以太坊公链网络的各个节点中。
 
-![A-Distributed-P2P-Network-with-Elements-of-Blockchain-and-Cryptocurrency](https://learnblockchain.cn/books/assets/A-Distributed-P2P-Network.jpg)
+![A-Distributed-P2P-Network-with-Elements-of-Blockchain-and-Cryptocurrency](https://img.learnblockchain.cn/book_geth/A-Distributed-P2P-Network.jpg)
 
 进入以太坊交易池的交易被区分本地还是远方的目的是因为，节点对待local的交易和remote的交易有所差异。简单地说是 local 交易优先级高于 remote 交易。
 
@@ -35,7 +35,7 @@ weight: 20201
 
 下图是以太坊交易池的主要设计模块，分别是交易池配置、实时的区块链状态、交易管理容器、本地交易存储和新交易事件。
 
-![ethereum-tx-pool-desgin](https://learnblockchain.cn/books/assets/image-20190616220718529.png)
+![ethereum-tx-pool-desgin](https://img.learnblockchain.cn/book_geth/image-20190616220718529.png)
 
 各个模块相互影响，其中最重要的的交易管理。这也是需要我们重点介绍的部分。
 
@@ -50,13 +50,13 @@ type TxPoolConfig struct {
    NoLocals  bool
    Journal   string
    Rejournal time.Duration
-   PriceLimit uint64 
-   PriceBump  uint64 
-   AccountSlots uint64 
-   GlobalSlots  uint64 
-   AccountQueue uint64 
-   GlobalQueue  uint64  
-   Lifetime time.Duration 
+   PriceLimit uint64
+   PriceBump  uint64
+   AccountSlots uint64
+   GlobalSlots  uint64
+   AccountQueue uint64
+   GlobalQueue  uint64
+   Lifetime time.Duration
 }
 ```
 
@@ -121,8 +121,8 @@ for {
          pool.mu.Unlock()
       }
   //...
-  }    
-}      
+  }
+}
 ```
 
 接收到事件后，将执行 `func (pool *TxPool) reset(oldHead, newHead *types.Header)`方法更新 state和处理交易。核心是将交易池中已经不符合要求的交易删除并更新整理交易，这里不展开描述，有兴趣的话，可以到微信群中交流。
@@ -143,7 +143,7 @@ if !config.NoLocals && config.Journal != "" {
 		pool.journal = newTxJournal(config.Journal)
 		if err := pool.journal.load(pool.AddLocals); err != nil {
 			log.Warn("Failed to load transaction journal", "err", err)
-		} 
+		}
     //...
 }
 ```
@@ -152,7 +152,7 @@ if !config.NoLocals && config.Journal != "" {
 
 ```go
 // core/tx_pool.go:757
-func (pool *TxPool) journalTx(from common.Address, tx *types.Transaction) { 
+func (pool *TxPool) journalTx(from common.Address, tx *types.Transaction) {
    if pool.journal == nil || !pool.locals.contains(from) {
       return
    }
@@ -207,7 +207,7 @@ func (pm *ProtocolManager) txBroadcastLoop() {
    for {
       select {
       case event := <-pm.txsCh:
-         pm.BroadcastTxs(event.Txs) 
+         pm.BroadcastTxs(event.Txs)
       //...
    }
 }
@@ -232,7 +232,7 @@ w.commitTransactions(txset, coinbase, nil)
 
 最核心的部分则是交易池对交易的管理机制。以太坊将交易按状态分为两部分：可执行交易和非可执行交易。分别记录在pending容器中和 queue 容器中。
 
-![ethereum-tx-pool-txManager](https://learnblockchain.cn/books/assets/image-20190617002144274.png)
+![ethereum-tx-pool-txManager](https://img.learnblockchain.cn/book_geth/image-20190617002144274.png)
 
 如上图所示，交易池先采用一个 txLookup (内部为map）跟踪所有交易。同时将交易根据本地优先，价格优先原则将交易划分为两部分 queue 和 pending。而这两部交易则按账户分别跟踪。
 

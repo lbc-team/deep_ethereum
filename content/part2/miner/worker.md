@@ -10,7 +10,7 @@ weight: 20303
 
 先回头看看，在讲解[挖矿的第一篇文章]({{< ref "/part2/miner" >}})中，有讲到挖矿流程。这篇文章将讲解挖矿中的各个环节。
 
-![以太坊挖矿流程](https://learnblockchain.cn/books/assets/image-20190721114625930.png!de)
+![以太坊挖矿流程](https://img.learnblockchain.cn/book_geth/image-20190721114625930.png!de)
 
 ## 挖矿代码方法介绍
 
@@ -25,7 +25,7 @@ weight: 20303
 
 什么时候可以进行挖矿？如下图所述，挖矿启动工作时由 mainLoop 中根据三个信号来管理。首先是新工作启动信号(newWorkCh)、再是根据新交易信号(txsCh)和最长链链切换信号(chainSideCh)来管理挖矿。
 
-![挖矿工作信号](https://learnblockchain.cn/books/assets/image-20190725220835554.png!de)
+![挖矿工作信号](https://img.learnblockchain.cn/book_geth/image-20190725220835554.png!de)
 
 三种信号，三种管理方式。
 
@@ -53,7 +53,7 @@ worker.txsSub = eth.TxPool().SubscribeNewTxsEvent(worker.txsCh)
 
 ```go
 //miner/worker.go:451
-case ev := <-w.txsCh: 
+case ev := <-w.txsCh:
    if !w.isRunning() && w.current != nil {//❶
       w.mu.RLock()
       coinbase := w.coinbase
@@ -67,7 +67,7 @@ case ev := <-w.txsCh:
       txset := types.NewTransactionsByPriceAndNonce(w.current.signer, txs)//❸
       w.commitTransactions(txset, coinbase, nil)//❹
       w.updateSnapshot()//❺
-   } else { 
+   } else {
       if w.config.Clique != nil && w.config.Clique.Period == 0 {//❻
          w.commitNewWork(nil, false, time.Now().Unix())
       }
@@ -81,24 +81,24 @@ case ev := <-w.txsCh:
 
 总得来说，新交易信息并不会干扰挖矿。而仅仅是继续使用当前的挖矿上下文，提交交易。也不用考虑交易是否已处理， 因为当交易重复时，第二次提交将会失败。
 
-###最长链链切换信号 
+###最长链链切换信号
 
 当一个区块落地成功后，有可能是在另一个分支上。当此分支的挖矿难度大于当前分支时，将发生最长链切换。此时 miner 将需要订阅从信号，以便更新叔块信息。
 
 ```go
 //miner/worker.go:412
-case ev := <-w.chainSideCh: 
+case ev := <-w.chainSideCh:
    if _, exist := w.localUncles[ev.Block.Hash()]; exist {//❶
       continue
    }
    if _, exist := w.remoteUncles[ev.Block.Hash()]; exist {
       continue
-   } 
+   }
    if w.isLocalBlock != nil && w.isLocalBlock(ev.Block) {//❷
       w.localUncles[ev.Block.Hash()] = ev.Block
    } else {
       w.remoteUncles[ev.Block.Hash()] = ev.Block
-   } 
+   }
    if w.isRunning() && w.current != nil && w.current.uncles.Cardinality() < 2 {//❸
       start := time.Now()
       if err := w.commitUncle(w.current, ev.Block.Header()); err == nil {//❹
@@ -119,7 +119,7 @@ case ev := <-w.chainSideCh:
 
 ### 设置新区块基本信息
 
-挖矿是在竞争挖下一个区块，需要把最新高度的区块作为父块来确定新区块的基本信息❶。 
+挖矿是在竞争挖下一个区块，需要把最新高度的区块作为父块来确定新区块的基本信息❶。
 
 ```go
 //miner/worker.go:829
@@ -127,7 +127,7 @@ parent := w.chain.CurrentBlock()//❶
 
 if parent.Time() >= uint64(timestamp) {//❷
    timestamp = int64(parent.Time() + 1)
-} 
+}
 if now := time.Now().Unix(); timestamp > now+1 {
    wait := time.Duration(timestamp-now) * time.Second
    log.Info("Mining too far in the future", "wait", common.PrettyDuration(wait))
@@ -165,7 +165,7 @@ if err := w.engine.Prepare(w.chain, header); err != nil {//❻
 
 至此，区块头信息准备就绪。
 
-### 准备上下文环境 
+### 准备上下文环境
 
 为了方便的共享当前新区块的信息，是专门定义了一个  environment ，专用于记录和当前挖矿工作相关内容。为即将开始的挖矿，先创建一份新的上下文环境信息。
 
@@ -198,7 +198,7 @@ if err := w.engine.Prepare(w.chain, header); err != nil {//❻
 ```go
 //miner/worker.go:886
 uncles := make([]*types.Header, 0, 2)
-commitUncles := func(blocks map[common.Hash]*types.Block) { 
+commitUncles := func(blocks map[common.Hash]*types.Block) {
    for hash, uncle := range blocks {//❷
       if uncle.NumberU64()+staleThreshold <= header.Number.Uint64() {
          delete(blocks, hash)
@@ -208,12 +208,12 @@ commitUncles := func(blocks map[common.Hash]*types.Block) {
       if len(uncles) == 2 {//❸
          break
       }
-      if err := w.commitUncle(env, uncle.Header()); err != nil { 
-      } else { 
+      if err := w.commitUncle(env, uncle.Header()); err != nil {
+      } else {
          uncles = append(uncles, uncle.Header())
       }
    }
-} 
+}
 commitUncles(w.localUncles)//❶
 commitUncles(w.remoteUncles)
 ```
@@ -225,7 +225,7 @@ commitUncles(w.remoteUncles)
 ```go
 //miner/worker.go:645
 func (w *worker) commitUncle(env *environment, uncle *types.Header) error {
-   hash := uncle.Hash() 
+   hash := uncle.Hash()
    //...
    if env.header.ParentHash == uncle.ParentHash {//❹
       return errors.New("uncle is sibling")
@@ -238,7 +238,7 @@ func (w *worker) commitUncle(env *environment, uncle *types.Header) error {
 
 唯一需要确认的是叔块必须在另一个分支上❹。总得来说，叔块是最近7个高度内上的区块，，且和当前新区块不在同一分支上、且不能重复包含在祖先块中。
 
-![以太坊挖矿选择叔块](https://learnblockchain.cn/books/assets/image-20190726235839046.png!de)
+![以太坊挖矿选择叔块](https://img.learnblockchain.cn/book_geth/image-20190726235839046.png!de)
 
 ### 提交交易
 
@@ -306,7 +306,7 @@ case task := <-w.taskCh://❶
    sealHash := w.engine.SealHash(task.block.Header())//❷
    if sealHash == prev {
       continue
-   } 
+   }
    interrupt()//❹
    stopCh, prev = make(chan struct{}), sealHash
 
@@ -346,7 +346,7 @@ select {
 case block := <-w.resultCh: //❶
    if block == nil {
       continue
-   } 
+   }
    if w.chain.HasBlock(block.Hash(), block.NumberU64()) {//❷
       continue
    }
@@ -360,7 +360,7 @@ case block := <-w.resultCh: //❶
 
 ### 存储与广播挖出的新块
 
- 挖矿结果已经是一个包含正确Nonce 的新区块。在正式存储新区块前，需要检查区块是否已经存在，存在则不继续处理❷。 
+ 挖矿结果已经是一个包含正确Nonce 的新区块。在正式存储新区块前，需要检查区块是否已经存在，存在则不继续处理❷。
 
 ```go
 //miner/worker.go:556
@@ -369,7 +369,7 @@ task, exist := w.pendingTasks[sealhash]
 w.pendingMu.RUnlock()
 if !exist {  //❸
    continue
-} 
+}
 var (
    receipts = make([]*types.Receipt, len(task.receipts))
    logs     []*types.Log
@@ -380,7 +380,7 @@ for i, receipt := range task.receipts { //❹
    receipt.TransactionIndex = uint(i)
 
    receipts[i] = new(types.Receipt)
-   *receipts[i] = *receipt 
+   *receipts[i] = *receipt
    for _, log := range receipt.Logs {
       log.BlockHash = hash
    }
@@ -405,7 +405,7 @@ w.mux.Post(core.NewMinedBlockEvent{Block: block})//❻
 
 ```go
 //eth/handler.go:771
-func (pm *ProtocolManager) minedBroadcastLoop() { 
+func (pm *ProtocolManager) minedBroadcastLoop() {
    for obj := range pm.minedBlockSub.Chan() {
       if ev, ok := obj.Data.(core.NewMinedBlockEvent); ok {
          pm.BroadcastBlock(ev.Block, true) //❼
@@ -437,5 +437,5 @@ w.unconfirmed.Insert(block.NumberU64(), block.Hash())//⑩
 
 至此，已经讲解完以太坊挖出一个新区块所经历的各个环节。下面是一张流程图是对挖矿环节的细化，可以边看图便对比阅读此文。同时在讲解时，并没有涉及共识内部逻辑、以及提交交易到虚拟机执行内容。这些内容不是挖矿流程的重点，共识部分将在一下次讲解共识时细说。
 
-![以太坊挖矿流程细节](https://learnblockchain.cn/books/assets/image-20190728005050579.png!de)
+![以太坊挖矿流程细节](https://img.learnblockchain.cn/book_geth/image-20190728005050579.png!de)
 

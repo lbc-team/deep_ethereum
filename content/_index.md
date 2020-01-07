@@ -11,7 +11,7 @@
 {{% notice note %}}
 登链是商业性、培训机构。但[深入浅出区块链](https://learnblockchain.cn/)博客,是一个社区下公益的技术布道平台。
 {{% /notice %}}
- 
+
 ## 离线阅读
 
 如果你想在你个人电脑上离线阅读，那么你只需要拷贝项目到本地，并使用 hugo 软件运行即可。
@@ -43,4 +43,4 @@ hugo serve
 
 目前在登链学院组织的微信群交流，扫描加微信进以太坊技术交流群。
 
-![以太坊技术交流微信群](https://learnblockchain.cn/books/images/wechat-ethereum.jpeg)
+![以太坊技术交流微信群](https://img.learnblockchain.cn/book_geth/wechat-ethereum.jpeg)

@@ -1,6 +1,6 @@
 ---
 title: "交易入队列"
-date: 2019-07-31T22:58:46+08:00 
+date: 2019-07-31T22:58:46+08:00
 weight: 20203
 ---
 
@@ -61,7 +61,7 @@ if err != nil {
 既然知道是交易发送者(签名者)，那么该发送者也可能是来自于交易池所标记的local账户。因此当交易不是local交易时，还进一步检查是否属于local账户。
 
 ```go
-local = local || pool.locals.contains(from) 
+local = local || pool.locals.contains(from)
 ```
 
 
@@ -114,20 +114,20 @@ if tx.Gas() < intrGas {
 
 在交易池中并不是一个队列管理数据，而是由多个数据集一起管理交易。
 
-![ethereum-tx-pool-txManager](https://learnblockchain.cn/books/assets/image-20190617002144274.png)
+![ethereum-tx-pool-txManager](https://img.learnblockchain.cn/book_geth/image-20190617002144274.png)
 
 如上图所示，交易池先采用一个 txLookup (内部为map）跟踪所有交易。同时将交易根据本地优先，价格优先原则将交易划分为两部分 queue 和 pending。而这两部交易则按账户分别跟踪。
 
  在进入交易队列前，将判断所有交易队列 all 是否已经达到上限。如果到底上限，则需要从交易池或者当前交易中移除优先级最低交易 。
 
 ```go
-//core/tx_pool.go:668 
+//core/tx_pool.go:668
 if uint64(pool.all.Count()) >= pool.config.GlobalSlots+pool.config.GlobalQueue { //❶
    if !local && pool.priced.Underpriced(tx, pool.locals) {//❷
       log.Trace("Discarding underpriced transaction", "hash", hash, "price", tx.GasPrice())
       underpricedTxCounter.Inc(1)
       return false, ErrUnderpriced
-   } 
+   }
    drop := pool.priced.Discard(pool.all.Count()-int(pool.config.GlobalSlots+pool.config.GlobalQueue-1), pool.locals) //❸
    for _, tx := range drop {
       log.Trace("Discarding freshly underpriced transaction", "hash", tx.Hash(), "price", tx.GasPrice())
@@ -145,12 +145,12 @@ if uint64(pool.all.Count()) >= pool.config.GlobalSlots+pool.config.GlobalQueue {
 
 ```go
 //core/tx_pool.go:685
-if list := pool.pending[from]; list != nil && list.Overlaps(tx) {//❹ 
+if list := pool.pending[from]; list != nil && list.Overlaps(tx) {//❹
    inserted, old := list.Add(tx, pool.config.PriceBump)//❺
    if !inserted {
       pendingDiscardCounter.Inc(1)
       return false, ErrReplaceUnderpriced
-   } 
+   }
    if old != nil { //❻
       pool.all.Remove(old.Hash())
       pool.priced.Removed()
@@ -158,7 +158,7 @@ if list := pool.pending[from]; list != nil && list.Overlaps(tx) {//❹
    }
    pool.all.Add(tx)
    pool.priced.Put(tx)
-   pool.journalTx(from, tx) 
+   pool.journalTx(from, tx)
    //...
    return old != nil, nil
 }
@@ -171,13 +171,13 @@ if err != nil {
 检查完是否需要替换 pending 交易后，则将交易存入非可执行队列❼。同样，在进入非可执行队列之前，也要检查是否需要替换掉相同 nonce 的交易❽。
 
 ```go
-func (pool *TxPool) enqueueTx(hash common.Hash, tx *types.Transaction) (bool, error) { 
+func (pool *TxPool) enqueueTx(hash common.Hash, tx *types.Transaction) (bool, error) {
    //...
    inserted, old := pool.queue[from].Add(tx, pool.config.PriceBump) //❽
-   if !inserted { 
+   if !inserted {
       queuedDiscardCounter.Inc(1)
       return false, ErrReplaceUnderpriced
-   } 
+   }
    if old != nil {
       pool.all.Remove(old.Hash())
       pool.priced.Removed()

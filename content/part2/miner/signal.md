@@ -10,7 +10,7 @@ weight: 20302
 
 下图是实例化 worker 时，启动的四个循环，分别监听不同信号来处理不同任务。
 
-![以太坊Miner下监听信号](https://learnblockchain.cn/books/assets/image-20190721235307204.png!de)
+![以太坊Miner下监听信号](https://img.learnblockchain.cn/book_geth/image-20190721235307204.png!de)
 
 ## 挖矿工作信号
 
@@ -32,7 +32,7 @@ weight: 20302
 
 2. chainHead信号：
 
-   节点接收到了新的区块。比如，你原本是是在下一个新区块上挖矿，区块高度是 1000。此时你从网络上收到了一个合法的区块，高度也一样。这样，你就不需要再花力气和别人竞争了，赶快投入到下一个区块的挖矿竞争，才是有意义的。 
+   节点接收到了新的区块。比如，你原本是是在下一个新区块上挖矿，区块高度是 1000。此时你从网络上收到了一个合法的区块，高度也一样。这样，你就不需要再花力气和别人竞争了，赶快投入到下一个区块的挖矿竞争，才是有意义的。
 
    ```go
    clearPending(head.Block.NumberU64())
@@ -45,7 +45,7 @@ weight: 20302
    一个时间timer，默认每三秒检查执行一次检查。如果当下正在挖矿中，那么需要检查是否有新交易。如果有新交易，则需要放弃当前交易处理，重新开始一轮挖矿。这样可以使得愿意支付更多手续费的交易能被优先处理。
 
    ```go
-   if w.isRunning() && (w.config.Clique == nil || w.config.Clique.Period > 0) { 
+   if w.isRunning() && (w.config.Clique == nil || w.config.Clique.Period > 0) {
       if atomic.LoadInt32(&w.newTxs) == 0 {
          timer.Reset(recommit)
          continue
@@ -79,7 +79,7 @@ newWork 信号数据中有三个字段：
 
 再回到 timer 信号上。geth 程序启动时，timmer 计时器默认是三秒。但这个时间间隔不是一成不变的，会根据挖矿时长来动态调整。
 
-为什么是默认值是三秒呢？也就是说，系统默认有三秒时间来处理交易，一笔转账交易执行时间是毫秒级的。如果三秒后，仍有新交易未处理完毕，则需要重来，将根据新的交易排序，将愿意支付更多手续费的交易优先处理。 
+为什么是默认值是三秒呢？也就是说，系统默认有三秒时间来处理交易，一笔转账交易执行时间是毫秒级的。如果三秒后，仍有新交易未处理完毕，则需要重来，将根据新的交易排序，将愿意支付更多手续费的交易优先处理。
 
 在挖矿timer计时器中，不能固定为三秒钟，这样时间可能太短。采用动态估算的方式也许更加有效。 动态估算的计算公式分两部分：先是计算出一个比例ratio=燃料剩余率，再加工计算出一个新的计时器时间。
 
@@ -113,11 +113,11 @@ if interrupt != nil && atomic.LoadInt32(interrupt) != commitInterruptNone {
 
 ```go
 //miner/worker.go:379
-case adjust := <-w.resubmitAdjustCh: //❹ 
-   if adjust.inc { 
-      recalcRecommit(float64(recommit.Nanoseconds())/adjust.ratio, true)//❺ 
-   } else { 
-      recalcRecommit(float64(minRecommit.Nanoseconds()), false) 
+case adjust := <-w.resubmitAdjustCh: //❹
+   if adjust.inc {
+      recalcRecommit(float64(recommit.Nanoseconds())/adjust.ratio, true)//❺
+   } else {
+      recalcRecommit(float64(minRecommit.Nanoseconds()), false)
    }
 ```
 
@@ -136,9 +136,9 @@ func (w *worker) setRecommitInterval(interval time.Duration) {
 
 ```go
 //miner/worker.go:366
-case interval := <-w.resubmitIntervalCh: 
-   if interval < minRecommitInterval { 
+case interval := <-w.resubmitIntervalCh:
+   if interval < minRecommitInterval {
       interval = minRecommitInterval
-   } 
+   }
    minRecommit, recommit = interval, interval
 ```

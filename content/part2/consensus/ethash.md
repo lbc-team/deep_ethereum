@@ -23,7 +23,7 @@ Ethash 是 Ethereum 1.0 计划的 PoW 共识算法，在 Ethereum 2.0 将推进 
 一个窗口期内种子哈希、缓存和数据集都是固定不变的。
 因此可按窗口期缓存数据，大多时候是读取数据，极少时候需要重新生成。
 
-![Ethash算法计算流程](https://learnblockchain.cn/books/assets/2019-8-18-10-16-46.png!de)
+![Ethash算法计算流程](https://img.learnblockchain.cn/book_geth/2019-8-18-10-16-46.png!de)
 
 下半部分是寻找 Nonce，矿工在准备好一个区块数据，需要进行PoW工作量计算时，实际上是在暴力破解一道数学题。
 已知的区块RLP数据和数据集，再结合需要求解的变量 Nonce，进行数据合成计算。

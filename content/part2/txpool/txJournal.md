@@ -1,14 +1,14 @@
 ---
 title: "本地待处理交易存储"
 menuTitle: "交易存储"
-date: 2019-07-31T22:58:46+08:00 
+date: 2019-07-31T22:58:46+08:00
 weight: 20202
 ---
 
-上篇在介绍交易池时有讲到对于本地交易的特殊处理。为了不丢失未完成的本地交易，以太坊交易池通过 journal 文件存储和管理当前交易池中的本地交易，并定期更新存储。 
+上篇在介绍交易池时有讲到对于本地交易的特殊处理。为了不丢失未完成的本地交易，以太坊交易池通过 journal 文件存储和管理当前交易池中的本地交易，并定期更新存储。
 
 下图是交易池对本地待处理交易的磁盘存储管理流程，涉及加载、实时写入和定期更新维护。
-![以太坊交易池本地待处理交易存储管理](https://learnblockchain.cn/books/assets/image-20190622233938478.png!de)
+![以太坊交易池本地待处理交易存储管理](https://img.learnblockchain.cn/book_geth/image-20190622233938478.png!de)
 
 ## 加载已存储交易
 
@@ -42,8 +42,8 @@ var (
    failure error
    batch   types.Transactions
 )
-for { 
-   tx := new(types.Transaction) 
+for {
+   tx := new(types.Transaction)
    if err = stream.Decode(tx); err != nil { //❹
       if err != io.EOF {
          failure = err
@@ -52,7 +52,7 @@ for {
          loadBatch(batch)
       }
       break
-   } 
+   }
    total++
 
    if batch = append(batch, tx); batch.Len() > 1024 {//❺
@@ -66,7 +66,7 @@ for {
 
 ```go
 loadBatch := func(txs types.Transactions) {
-   for _, err := range add(txs) { 
+   for _, err := range add(txs) {
       if err != nil {
          log.Debug("Failed to add journaled transaction", "err", err)
          dropped++ //❽
@@ -83,7 +83,7 @@ log.Info("Loaded local transaction journal", "transactions", total, "dropped", d
 
 ##  存储交易
 
-![以太坊存储本地交易](https://learnblockchain.cn/books/assets/image-20190622234643382.png!de)
+![以太坊存储本地交易](https://img.learnblockchain.cn/book_geth/image-20190622234643382.png!de)
 
 当交易池新交易来自于本地账户时❶，如果已开启记录本地交易，则将此交易加入journal ❷。到交易池时，将实时存储到 journal 文件中。
 
@@ -127,7 +127,7 @@ defer func() { journal.writer = nil }() //❺
 
 ## 定期更新 journal
 
-![image-20190622234757114](https://learnblockchain.cn/books/assets/image-20190622234757114.png!de)
+![image-20190622234757114](https://img.learnblockchain.cn/book_geth/image-20190622234757114.png!de)
 
 journal 的目的是长期存储本地尚未完成的交易，以便交易不丢失。而文件内容属于交易的RLP编码内容，不便于实时清空已完成或已无效的交易。因此以太坊采取的是定期将交易池在途交易更新到 journal 文件中。
 

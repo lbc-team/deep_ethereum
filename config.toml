@@ -22,7 +22,7 @@ uglyURLs = true
 home = [ "HTML", "RSS", "JSON"]
 
 [params]
-  # Prefix URL to edit current page. Will display an "Edit this page" button on top right hand corner of every page. 
+  # Prefix URL to edit current page. Will display an "Edit this page" button on top right hand corner of every page.
   # Useful to give opportunity to people to create merge request for your doc.
   # See the config.toml file from this documentation site to have an example.
   editURL = "https://github.com/lbc-team/deep_ethereum/edit/master/content/"
@@ -34,12 +34,12 @@ home = [ "HTML", "RSS", "JSON"]
   showVisitedLinks = false
   # Disable search function. It will hide search bar
   disableSearch = true
-  # Javascript and CSS cache are automatically busted when new version of site is generated. 
+  # Javascript and CSS cache are automatically busted when new version of site is generated.
   # Set this to true to disable this behavior (some proxies don't handle well this optimization)
   disableAssetsBusting = false
   # Set this to true to disable copy-to-clipboard button for inline code.
   disableInlineCopyToClipBoard = true
-  # A title for shortcuts in menu is set by default. Set this to true to disable it. 
+  # A title for shortcuts in menu is set by default. Set this to true to disable it.
   disableShortcutsTitle = false
   # When using mulitlingual website, disable the switch language button.
   disableLanguageSwitchingButton = false
@@ -55,21 +55,21 @@ home = [ "HTML", "RSS", "JSON"]
   # 畅言
   changyan_enable= true # 是否开启评论插件
   changyan_appid= "cyubaGnrI"# 应用ID
-  changyan_conf = '88df1ba607b5e7fd89a8664391d6b28d' #样式ID  
-  # cnzz 
+  changyan_conf = '88df1ba607b5e7fd89a8664391d6b28d' #样式ID
+  # cnzz
   cnzz_enable=true #是否开启cnzz统计
   cnzz_appid="1265946080"
 
 
-[[menu.shortcuts]] 
+[[menu.shortcuts]]
 name = "<i class='fab fa-github'></i> Github 源码"
 identifier = "ds"
 url = "https://github.com/lbc-team/deep_ethereum"
 weight = 10
-  
 
-[[menu.shortcuts]] 
-name = "<i class='fas fa-blog'></i> 深入浅出区块链" 
+
+[[menu.shortcuts]]
+name = "<i class='fas fa-blog'></i> 深入浅出区块链"
 url = "https://learnblockchain.cn/"
 weight = 20
 
@@ -81,21 +81,21 @@ weight = 30
 
 [[menu.shortcuts]]
 name = '<img src="https://img.shields.io/badge/赞赏-￥1-green.svg?logo=wechat&amp;style=flat&amp;color=red">'
-url = "https://learnblockchain.cn/books/assets/WechatSP.jpeg"
+url = "https://img.learnblockchain.cn/book_geth/WechatSP.jpeg"
 weight = 41
 [[menu.shortcuts]]
-name = '<img src="https://img.shields.io/badge/交流-扫码入群-green.svg?logo=wechat&amp;style=flat&amp;color=red">' 
-url = "https://learnblockchain.cn/books/images/wechat-ethereum.jpeg"
-weight = 42 
+name = '<img src="https://img.shields.io/badge/交流-扫码入群-green.svg?logo=wechat&amp;style=flat&amp;color=red">'
+url = "https://img.learnblockchain.cn/book_geth/wechat-ethereum.jpeg"
+weight = 42
 
 
 [[menu.shortcuts]]
-name = '<img src="https://img.shields.io/travis/lbc-team/deep_ethereum.svg?logo=travis&label=构建" alt="Travis (.org)"> ' 
+name = '<img src="https://img.shields.io/travis/lbc-team/deep_ethereum.svg?logo=travis&label=构建" alt="Travis (.org)"> '
 url = "https://travis-ci.org/lbc-team/deep_ethereum"
 weight = 43
 
 
 [[menu.shortcuts]]
-name = '<img src="https://img.shields.io/github/last-commit/lbc-team/deep_ethereum.svg?logo=git&label=更新" alt="GitHub last commit">' 
+name = '<img src="https://img.shields.io/github/last-commit/lbc-team/deep_ethereum.svg?logo=git&label=更新" alt="GitHub last commit">'
 url = "https://github.com/lbc-team/deep_ethereum/commits/master"
 weight = 44
