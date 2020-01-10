@@ -15,4 +15,5 @@ resources
 # eBook build output
 *.epub
 *.mobi
-*.pdf
+*.pdfdeploy_key
+deploy_key
