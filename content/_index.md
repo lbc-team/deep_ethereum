@@ -43,4 +43,4 @@ hugo serve
 
 目前在登链学院组织的微信群交流，扫描加微信进以太坊技术交流群。
 
-![以太坊技术交流微信群](https://img.learnblockchain.cn/book_geth/wechat-ethereum.jpeg)
+![以太坊技术交流微信群](https://img.learnblockchain.cn/qrcode/xiaona_qrcode2.jpeg)
