@@ -83,7 +83,7 @@ var nilValueNode = valueNode(nil) //空白节点
 ```
 
 + fullNode: 分支节点，fullNode[16]的类型是 valueNode。前 16 个元素对应键中可能存在的一个十六进制字符。如果键[key,value]在对应的分支处结束，则在列表末尾存储 value 。
-+ shortNode: 叶子节点或者扩展节点，当 shortNode.Key的末尾字节是终止符 `16` 时表示为叶子节点。当 shortNode 是叶子节点是，Val 是 valueNode。
++ shortNode: 叶子节点或者扩展节点，当 shortNode.Key的末尾字节是终止符 `16` 时表示为叶子节点。当 shortNode 是叶子节点时，Val 是 valueNode。
 + hashNode: 应该取名为 collapsedNode 折叠节点更合适些，但因为其值是一个哈希值当做指针使用，所以取名 hashNode。使用这个哈希值可以从数据库读取节点数据展开节点。
 + valueNode: 数据节点，实际的业务数据值，严格来说他不属于树中的节点，它只存在于 fullNode.Children 或者 shortNode.Val 中。
 
