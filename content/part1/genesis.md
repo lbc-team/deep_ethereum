@@ -154,7 +154,7 @@ eth.getBalance(eth.accounts[1])
 那么，可使用以太坊测试网络。以太坊公开的测试网络有 5 个，目前仍在运行的有 4 个，具体见下表格。
 
 |测试网|共识机制|出块间隔|提供方|上线时间|备注|状态|
-|---|---|---|---|---|---|---|---|
+|---|---|---|---|---|---|---|
 | Morden | PoW || 以太坊官方 |2015.7|因难度炸弹被迫退役 |stopped|
 |[Ropsten](https://ropsten.etherscan.io) |PoW |30秒|以太坊官方|2016.11|接替Morden| running|
 |[Kovan](https://kovan.etherscan.io/) | PoA | 4秒|以太坊钱包<br>Parity开发团队| 2017.3 |不支持geth| running |
