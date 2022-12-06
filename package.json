@@ -24,7 +24,7 @@
     "grunt-contrib-htmlmin": "^2.0.0",
     "grunt-contrib-jshint": "~0.7.2",
     "grunt-exec": "^1.0.1",
-    "grunt-gh-pages": "0.9.1",
+    "grunt-gh-pages": "4.0.0",
     "time-grunt": "^2.0.0"
   },
   "peerDependencies": {
