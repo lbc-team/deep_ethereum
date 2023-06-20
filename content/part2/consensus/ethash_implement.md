@@ -354,7 +354,7 @@ case found <- block.WithSeal(header):
 
 ## 如何校验区块的合法性
 
-当矿工广播区块到网络中后，如何才能校验区块由完成一定工作量呢？
+当矿工广播区块到网络中后，如何才能校验区块已完成一定工作量呢？
 
 在共识接口中有定义校验Seal方法：`VerifySeal`。
 
@@ -395,7 +395,7 @@ func (ethash *Ethash) verifySeal(chain consensus.ChainReader, header *types.Head
 
 校验时 fulldag 为false，将采用 hashimotoLight 计算出在指定Nonce下的执行结果 result 和 digest。
 根据本地计算结果应该和区块的MixDigest值一致，且 result 低于给定的目标值 target，
-则说明Seal校验通过，表明该区块由完成一定量的工作量。
+则说明Seal校验通过，表明该区块已完成一定量的工作量。
 
 回到 hashimotoLight 方法，此方法是直接利用缓存实时计算出数据线来参与校验。这种方式和 hashimotoFull 类似。
 因为数据集也是通过缓存生成，如果没有数据集可以直接使用缓存计算。
